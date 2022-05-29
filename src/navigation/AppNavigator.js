@@ -11,13 +11,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import LogInScreen from '../screens/LogInScreen.js';
+import SignUpScreen from '../screens/SignUpScreen.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     return (
-      <Tab.Navigator
+      <Tab.Navigator initialRouteName='Home'
         screenOptions={{
           tabBarStyle: styles.tabBar,
           tabBarActiveTintColor: colors.blue,
@@ -69,11 +71,22 @@ const AppNavigator = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen 
+            name = "LogInScreen"
+            component={LogInScreen} 
+            options={{headerShown: false}}
+          />
+          <Stack.Screen 
+            name = "SignUpScreen"
+            component={SignUpScreen} 
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="TabNavigator"
             component={TabNavigator}
             options={{headerShown: false}}
           />
+
         </Stack.Navigator>
       </NavigationContainer>
     );
