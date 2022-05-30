@@ -83,9 +83,9 @@ const restoreForm = () => {
         
         <Text style={styles.appName}>sepper</Text>
         
-        <View style={styles.userWrapper}>
+        {/*<View style={styles.userWrapper}>
             <Text style={styles.heading}>Username</Text>
-        </View>
+        </View> */}
 
         <View style={styles.userWrapper}>
             <Text style={styles.heading}>Email</Text>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     },
 
     userWrapper: {
-        paddingTop: 30,
+        paddingTop: 40,
         paddingBottom:0,
     },
 
