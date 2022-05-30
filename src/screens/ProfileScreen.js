@@ -3,12 +3,14 @@ import React from 'react';
 import colors from '../assets/colors/colors.js';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({navigation}) {
     return (
         <View>
             <SafeAreaView style={styles.headerContainer}>
                 <Text style={styles.header}>User</Text>
-                <TouchableOpacity style={styles.settingsIcon}>
+                <TouchableOpacity 
+                    style={styles.settingsIcon}
+                    onPress={() => navigation.navigate('LogOut')}>
                     <MaterialIcons name="settings" size={40} color={colors.lightGray}></MaterialIcons>
                 </TouchableOpacity>
             </SafeAreaView>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {StyleSheet} from 'react-native';
 import colors from '../assets/colors/colors.js';
 import HomeScreen from '../screens/HomeScreen.js';
@@ -12,13 +12,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LogInScreen from '../screens/LogInScreen.js';
-import SignUpScreen from '../screens/SignUpScreen.js';
+import LogOutScreen from '../screens/LogOutScreen.js';
 
-const Stack = createNativeStackNavigator();
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/index.js';
+
+
+const LogInStack = createNativeStackNavigator();
+const MainStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
-    return (
+const TabNavigator = () => (
       <Tab.Navigator initialRouteName='Home'
         screenOptions={{
           tabBarStyle: styles.tabBar,
@@ -64,34 +68,60 @@ const TabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-    );
-  };
+);
   
 const AppNavigator = () => {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+      const unsubscribeAuthStateChanged = onAuthStateChanged(
+          auth,
+          (authenticatedUser) => {
+              if (authenticatedUser) {
+                  setIsAuth(true);
+              } else {
+                  setIsAuth(false);
+              }
+          }
+      );
+
+      return () => unsubscribeAuthStateChanged();
+  }, []);
+
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen 
-            name = "LogInScreen"
-            component={LogInScreen} 
-            options={{headerShown: false}}
-          />
-          <Stack.Screen 
-            name = "SignUpScreen"
-            component={SignUpScreen} 
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="TabNavigator"
-            component={TabNavigator}
-            options={{headerShown: false}}
-          />
-
-        </Stack.Navigator>
+         {isAuth ? <InsideAppNavigator/> : <LogInNavigator />}
       </NavigationContainer>
     );
   };
+
+const InsideAppNavigator = () => (
+  <MainStack.Navigator initialRouteName='TabNavigator'>
+    <MainStack.Screen
+            name="TabNavigator"
+            component={TabNavigator}
+            options={{headerShown: false}}
+    />
+    
+    <MainStack.Screen
+            name="LogOut"
+            component={LogOutScreen}
+            options={{headerShown: false}}
+    />
+  </MainStack.Navigator>
+)
+
+const LogInNavigator = () => (
+  <LogInStack.Navigator>
+    <LogInStack.Screen 
+      name = "LogInScreen"
+      component={LogInScreen} 
+      options={{headerShown: false}}
+    />
+  </LogInStack.Navigator>
   
+);
+
 const styles = StyleSheet.create({
     tabBar: {
       backgroundColor: colors.lightBlue,
