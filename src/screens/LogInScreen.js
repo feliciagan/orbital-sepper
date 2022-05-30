@@ -82,10 +82,6 @@ const restoreForm = () => {
          />   
         
         <Text style={styles.appName}>sepper</Text>
-        
-        {/*<View style={styles.userWrapper}>
-            <Text style={styles.heading}>Username</Text>
-        </View> */}
 
         <View style={styles.userWrapper}>
             <Text style={styles.heading}>Email</Text>
