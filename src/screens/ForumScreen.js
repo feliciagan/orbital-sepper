@@ -28,13 +28,14 @@ const TabButton = (props) => {
         style={{
             backgroundColor: colors.lightBlue,
             paddingVertical: 25,
-            paddingHorizontal: 55,
+            width: '50%'
         }}
         onPress={() => props.setActiveTab(props.text)}>
             <Text style={{
                 color: props.activeTab === props.text ? colors.darkBlue : colors.blue,
                 fontSize: 20,
                 fontWeight: 'bold',
+                textAlign: 'center'
             }}>{props.text}</Text>
     </TouchableOpacity>
     );
@@ -62,5 +63,6 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: 'row',
+
     }
 });

@@ -1,40 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, ScrollView , StyleSheet, TouchableOpacity, TextInput, Image} from "react-native";
-//import HeaderTabs from '../../HeaderTabs.js';
+import React, { useState } from "react";
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, Keyboard } from "react-native";
+import HeaderTabs from '../components/HeaderTabs.js'
 
-const LogInScreen = ({navigation}) => {
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+} from 'firebase/auth';
+
+import AuthTextInput from '../components/auth/AuthTextInput.js';
+import { auth } from '../firebase/index.js';
+
+
+const LogInScreen = () => {
 
   const [activeTab, setActiveTab] = useState("Log In");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const loginHandler = async () => {
+    if (email.length === 0 || password.length === 0) {
+        
+        return;
+    }
+
+    await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+            const user = userCredentials.user;
+
+            console.log(user);
+
+            restoreForm();
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+
+            console.error('[loginHandler]', errorCode, errorMessage);
+        });
+
+};
+
+const signUpHandler = async () => {
+    if (email.length === 0 || password.length === 0) {
+     
+        return;
+    }
+
+    await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+            const user = userCredentials.user;
+
+            console.log(user);
+
+            restoreForm();
+           
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+
+            console.error('[signUpHandler]', errorCode, errorMessage);
+        });
+};
+
+const restoreForm = () => {
+    setEmail('');
+    setPassword('');
+    Keyboard.dismiss();
+};
 
   return (
+    <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : null}
+    >
     <SafeAreaView style={styles.mainPage}>
-        <TouchableOpacity style={styles.changeScreen}
-                          onPress={() => navigation.navigate('SignUpScreen')}
-        >
-            <Text style={styles.word}>Sign Up</Text>
-        </TouchableOpacity>
+        
+        <HeaderTabs 
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+         />   
         
         <Text style={styles.appName}>sepper</Text>
         
         <View style={styles.userWrapper}>
             <Text style={styles.heading}>Username</Text>
-            <TextInput style={styles.input}></TextInput>
         </View>
+
         <View style={styles.userWrapper}>
             <Text style={styles.heading}>Email</Text>
-            <TextInput style={styles.input}></TextInput>
+            <AuthTextInput 
+                value={email}
+                placeholder="Your Email"
+                textHandler={setEmail}
+                keyboardType="email-address"
+            />
         </View>
         <View style={styles.userWrapper}>
             <Text style={styles.heading}>Password</Text>
-            <TextInput style={styles.input} secureTextEntry></TextInput>
+            <AuthTextInput  
+                    value={password}
+                    placeholder="Your Password"
+                    textHandler={setPassword}
+                    secureTextEntry
+            />
         </View>
         <TouchableOpacity style={styles.signIn}
-                          onPress={() => navigation.navigate('TabNavigator')}>
-            <Text style={styles.buttonWords}>Log In</Text>
+                          onPress={activeTab === "Log In" ? loginHandler : signUpHandler}>
+            <Text style={styles.buttonWords}>{activeTab === "Log In" ? "Log In" : "Sign Up"}</Text>
         </TouchableOpacity> 
         <Image style={styles.img} source={require('../assets/globe.png')} /> 
     </SafeAreaView>
-  )
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -60,7 +138,7 @@ const styles = StyleSheet.create({
     mainPage: {
         flex: 1,
         backgroundColor: 'rgb(220, 227, 244)',
-        //justifyContent: 'flex-start',
+
     },
 
     appName: {
@@ -71,27 +149,14 @@ const styles = StyleSheet.create({
     },
 
     userWrapper: {
-        //height: 70,
         paddingTop: 30,
         paddingBottom:0,
-        //backgroundColor: 'black'
     },
 
     heading: {
         fontSize: 36,
         paddingLeft: 80,
         color: 'rgb(24,47,84)'
-        //textShadowColor:'black'
-    },
-
-    input: {
-        width: '70%',
-        height: 50,
-        borderWidth:2,
-        borderColor: 'white',
-        borderRadius: 30,
-        alignSelf:'center',
-        backgroundColor: 'white'
     },
 
     signIn: {
@@ -102,7 +167,6 @@ const styles = StyleSheet.create({
         marginTop: 50,
         width: '70%',
         height: 50,
-        //shadowColor: 'black'
     },
 
     buttonWords: {
@@ -113,4 +177,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LogInScreen
+export default LogInScreen;
