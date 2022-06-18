@@ -13,6 +13,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LogInScreen from '../screens/LogInScreen.js';
 import LogOutScreen from '../screens/LogOutScreen.js';
+import ForumFeedScreen from '../screens/ForumFeedScreen.js'
+import AnswerPostScreen from '../screens/AnswerPostScreen.js'
+import MakePostScreen from '../screens/MakePostScreen.js'
+
 
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/index.js';
@@ -108,6 +112,18 @@ const InsideAppNavigator = () => (
             component={LogOutScreen}
             options={{headerShown: false}}
     />
+
+    <MainStack.Screen
+            name="MakePostScreen"
+            component={MakePostScreen}
+            options={{headerShown: false}}
+    />
+
+    <MainStack.Screen
+            name="ForumFeedScreen"
+            component={ForumFeedScreen}
+            options={{headerShown: false}}
+    />
   </MainStack.Navigator>
 )
 
@@ -129,3 +145,4 @@ const styles = StyleSheet.create({
   });
 
 export default AppNavigator;
+

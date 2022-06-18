@@ -1,8 +1,19 @@
 import { View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import React from 'react';
 import colors from '../assets/colors/colors.js';
-
+import AppLoading from 'expo-app-loading';
+import { useFonts, Comfortaa_700Bold, Comfortaa_300Light } from '@expo-google-fonts/comfortaa';
+  
 export default function HomeScreen() {
+
+    let [fontsLoaded] = useFonts({
+        Comfortaa_700Bold,
+        Comfortaa_300Light
+      });
+    
+      if (!fontsLoaded) {
+        return <AppLoading />;
+      }
 
     return (
         <View>
@@ -26,7 +37,9 @@ const styles = StyleSheet.create({
         fontSize: 40,
         paddingBottom: 10,
         paddingLeft: 10,
+        fontFamily: 'Comfortaa_700Bold'
     },
+
     meetuptext: {
         color: colors.darkBlue,
         fontWeight: 'bold',
@@ -35,6 +48,7 @@ const styles = StyleSheet.create({
         paddingBottom: 300,
         paddingTop: 10,
         paddingLeft: 10,
+        fontFamily: 'Comfortaa_300Light'
     },
     sayhellotext: {
         color: colors.darkBlue,
@@ -43,5 +57,6 @@ const styles = StyleSheet.create({
         paddingBottom: 200,
         paddingTop: 20,
         paddingLeft: 10,
-    },
+        fontFamily: 'Comfortaa_300Light'
+    }
   });
