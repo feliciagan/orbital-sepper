@@ -6,7 +6,7 @@ const SplashScreen = () => {
   return (
     <SafeAreaView style={styles.screen}>
         <View style={styles.container}>
-            <Image style={styles.img} source={require('../assets/splash.png')} />
+            <Image style={styles.img} source={require('../assets/splashscreen.png')} />
             <Text style={styles.appName}>sepper</Text>
         </View>
     </SafeAreaView>
