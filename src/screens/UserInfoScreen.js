@@ -12,6 +12,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 
 export default function UserInfoScreen({navigation}) {
     const [displayName, setDisplayName] = useState('');
+    const [name, setName] = useState('');
     const [uniName, setUniName] = useState('');
     const [uniYear, setUniYear] = useState('');
     const [uniCourse, setUniCourse] = useState('');
@@ -47,6 +48,7 @@ export default function UserInfoScreen({navigation}) {
         }
         const userData = {
           displayName,
+          name,
           uniName,
           uniYear,
           uniCourse,
@@ -160,6 +162,12 @@ export default function UserInfoScreen({navigation}) {
             style={styles.textInput}
             />
             <TextInput
+            placeholder='Name'
+            value={name}
+            onChangeText={setName}
+            style={styles.textInput}
+            />
+            <TextInput
             placeholder='Home University'
             value={uniName}
             onChangeText={setUniName}
@@ -188,7 +196,7 @@ export default function UserInfoScreen({navigation}) {
                 title='Next'
                 color={colors.darkBlue}
                 onPress={handlePress}
-                disabled={!displayName || !uniName || !uniCourse || !uniYear}
+                disabled={!displayName || !name || !uniName || !uniCourse || !uniYear}
             />
             </View>
         </SafeAreaView>
