@@ -18,6 +18,7 @@ import UserInfoScreen from '../screens/UserInfoScreen.js';
 import ForumFeedScreen from '../screens/ForumFeedScreen.js'
 import AnswerPostScreen from '../screens/AnswerPostScreen.js'
 import MakePostScreen from '../screens/MakePostScreen.js'
+import OwnPostScreen from '../screens/OwnPostScreen.js'
 
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/index.js';
@@ -141,6 +142,11 @@ const AppNavigator = () => {
               <Stack.Screen
                       name="ForumFeedScreen"
                       component={ForumFeedScreen}
+                      options={{headerShown: false}}
+              />
+              <Stack.Screen
+                      name="OwnPostScreen"
+                      component={OwnPostScreen}
                       options={{headerShown: false}}
               />
            </Stack.Navigator>

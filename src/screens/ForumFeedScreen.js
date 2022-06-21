@@ -1,11 +1,28 @@
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import React, {useState, useEffect} from 'react';
 import colors from '../assets/colors/colors.js';
 import Feather from 'react-native-vector-icons/Feather';
+import { auth, db } from '../firebase/index.js'
+import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
+import ForumPost from '../components/ForumPost.js'
 
 export default function ForumScreen() {
     const [activeTab, setActiveTab] = useState('Newest');
+//2:21:52
+    const { currentUser } = auth;
+    const [posts, setPosts] = useState([]);
 
+    useEffect(
+        () => onSnapshot(
+            query(collection(db, "tasks"), orderBy("timestamp", "desc")),
+            (snapshot) => {
+                setPosts(snapshot.docs);
+            }
+        ), [db]
+    );
+
+    console.log(posts)
+    
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.headerContainer}>
@@ -18,23 +35,30 @@ export default function ForumScreen() {
                 <TabButton text={'Newest'} activeTab={activeTab} setActiveTab={setActiveTab}/>
                 <TabButton text={'Most liked'} activeTab={activeTab} setActiveTab={setActiveTab}/>
             </SafeAreaView>
-            <View style={styles.feed}>
-            <FlatList
-                data={taskList}
-                renderItem={({ item, index }) => (
-                     <Task
-                        data={item}
-                        key={index}
-                        //onDelete={onDeleteHandler}
+            <ScrollView style={styles.feed}>
+            {/*<FlatList
+                data={userData}
+                renderItem={renderUser}
+                vertical
+                //showsHorizontalScrollIndicator={false}
+    /> */}
+                {posts.map((post) => (
+                    <ForumPost 
+                        key={post.id}
+                        id={post.id}
+                        userName={post.data().username}
+                        profilePic={post.data().profileImg}
+                        post={post.data().post}
+                        time={post.data().timestamp.toDate()} 
                     />
+
+                )
                 )}
-                style={styles.list}
-                showsVerticalScrollIndicator={true}
-            />
-            </View>
+            </ScrollView>
         </View>
     );
 }
+
 
 const TabButton = (props) => {
     return (
@@ -80,9 +104,9 @@ const styles = StyleSheet.create({
         //backgroundColor: 'lightpink'
     },
     feed: {
-        //backgroundColor:'black',
+        backgroundColor: colors.pink,
         height: 500,
-        width: 500,
+        width: 420,
     
         
     }
