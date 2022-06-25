@@ -138,7 +138,7 @@ export default function UserInfoScreen({navigation}) {
                     backgroundColor: colors.pink
                 },
                 draggableIcon: {
-                    backgroundColor: '#000'
+                    backgroundColor: colors.darkBlue
                 }
                 }}
             >

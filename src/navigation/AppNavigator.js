@@ -15,9 +15,11 @@ import LogInScreen from '../screens/LogInScreen.js';
 import LogOutScreen from '../screens/LogOutScreen.js';
 import SplashScreen from '../screens/SplashScreen.js';
 import UserInfoScreen from '../screens/UserInfoScreen.js';
-import ForumFeedScreen from '../screens/ForumFeedScreen.js'
-import AnswerPostScreen from '../screens/AnswerPostScreen.js'
-import MakePostScreen from '../screens/MakePostScreen.js'
+import ForumFeedScreen from '../screens/ForumFeedScreen.js';
+import AnswerPostScreen from '../screens/AnswerPostScreen.js';
+import MakePostScreen from '../screens/MakePostScreen.js';
+import IndivChatScreen from '../screens/IndivChatScreen.js';
+import ChatHeader from '../components/ChatHeader.js';
 
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/index.js';
@@ -142,6 +144,13 @@ const AppNavigator = () => {
                       name="ForumFeedScreen"
                       component={ForumFeedScreen}
                       options={{headerShown: false}}
+              />
+              <Stack.Screen 
+                      name="IndivChatScreen" 
+                      component={IndivChatScreen} 
+                      options={{headerStyle: {backgroundColor: colors.pink},
+                      headerTintColor: colors.darkBlue, 
+                      headerTitle: (props) => <ChatHeader {...props} />}}
               />
            </Stack.Navigator>
          )}
