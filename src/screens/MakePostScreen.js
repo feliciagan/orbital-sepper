@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ToastAndroid, Keyboard } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ToastAndroid, Keyboard, ScrollView } from 'react-native';
 import React, {useState, useEffect } from 'react';
 import colors from '../assets/colors/colors.js';
 import { addDoc,
@@ -6,14 +6,17 @@ import { addDoc,
          query,
          collection,
          doc,
-         deleteDoc } from 'firebase/firestore'
+         deleteDoc, 
+         serverTimestamp} from 'firebase/firestore'
 
 
-import { db } from '../firebase/index.js'
+import { db, auth } from '../firebase/index.js'
 
 export default function MakePostScreen() {
 
     const [task, setTask] = useState('');
+    const [header, setHeader] = useState('');
+    const { currentUser } = auth;
     //const [taskList, setTaskList] = useState([]);
 
     /*const showRes = (text) => {
@@ -29,6 +32,11 @@ export default function MakePostScreen() {
         try {
             const taskRef = await addDoc(collection(db, 'tasks'), {
                 post: task,
+                header: header,
+                username: currentUser.displayName,
+                profileImg: currentUser.photoURL,
+                timestamp: serverTimestamp(),
+                email: currentUser.email
             });
 
             console.log('onSubmitHandler success', taskRef.id);
@@ -42,32 +50,36 @@ export default function MakePostScreen() {
 
     const clearForm = () => {
         setTask('');
+        setHeader('');
         Keyboard.dismiss();
     };
 
     return (
-        <View>
+        <ScrollView>
             <SafeAreaView>
                 <Text style={styles.introtext}>Make A Post!</Text>
             </SafeAreaView>
             <View>
+                <TextInput
+                style={[styles.header, styles.containerShadow]}
+                onChangeText={setHeader}
+                value={header}
+                ></TextInput>
                 <TextInput 
-                multiline={true}
+                //multiline={true}
                 style={[styles.input, styles.containerShadow]}
                 onChangeText={setTask}
                 value={task}
                 ></TextInput>
             </View>
-            <View>
-                <TouchableOpacity 
-                    style={styles.button}
-                    onPress={onSubmitHandler}>
-                    <Text style={styles.posttext}>
-                        Post
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+            <TouchableOpacity 
+                style={styles.button}
+                onPress={onSubmitHandler}>
+                <Text style={styles.posttext}>
+                    Post
+                </Text>
+            </TouchableOpacity>
+        </ScrollView>
     );
 }
 
@@ -80,12 +92,25 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
 
+    header: {
+        width: '90%',
+        height: 60,
+        backgroundColor: colors.pink,
+        alignSelf:'center',
+        borderRadius: 30,
+        paddingLeft: 10,
+        color: colors.darkBlue,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+
     input: {
         color: colors.darkBlue,
         //fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 16,
         backgroundColor: colors.pink,
-        paddingBottom: 600,
+        marginTop: 35,
+        height: 550,
         paddingTop: 30,
         paddingLeft: 10,
         borderRadius: 40,

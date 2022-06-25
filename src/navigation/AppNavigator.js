@@ -18,6 +18,7 @@ import UserInfoScreen from '../screens/UserInfoScreen.js';
 import ForumFeedScreen from '../screens/ForumFeedScreen.js';
 import AnswerPostScreen from '../screens/AnswerPostScreen.js';
 import MakePostScreen from '../screens/MakePostScreen.js';
+import OwnPostScreen from '../screens/OwnPostScreen.js';
 import IndivChatScreen from '../screens/IndivChatScreen.js';
 import ChatHeader from '../components/ChatHeader.js';
 
@@ -151,6 +152,11 @@ const AppNavigator = () => {
                       options={{headerStyle: {backgroundColor: colors.pink},
                       headerTintColor: colors.darkBlue, 
                       headerTitle: (props) => <ChatHeader {...props} />}}
+              />
+              <Stack.Screen
+                      name="OwnPostScreen"
+                      component={OwnPostScreen}
+                      options={{headerShown: false}}
               />
            </Stack.Navigator>
          )}
