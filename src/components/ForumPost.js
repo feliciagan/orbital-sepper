@@ -34,7 +34,8 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
                                 header: header
                             })}>
             <View style= {styles.top}>
-                <Image style={styles.img} source = {{uri:profilePic}}></Image>
+        
+                <Image style={styles.img} source = {{uri:profilePic}}></Image>*/
                 <Text style={styles.username}>@{userName}</Text>
             </View>
             <Text style={styles.header}>{header}</Text>
