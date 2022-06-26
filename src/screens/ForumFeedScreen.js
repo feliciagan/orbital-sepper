@@ -8,7 +8,7 @@ import ForumPost from '../components/ForumPost.js'
 
 export default function ForumScreen({navigation}) {
     const [activeTab, setActiveTab] = useState('Newest');
-//2:21:52
+
     const { currentUser } = auth;
     const [posts, setPosts] = useState([]);
 

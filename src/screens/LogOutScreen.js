@@ -22,7 +22,12 @@ const LogOutScreen = ({props, navigation}) => {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => navigation.navigate('OwnPostScreen')} >
-        <Text style={styles.logout}>User's own post</Text>
+        <Text style={styles.logout}>Your Posts</Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={() => navigation.navigate('OwnAnswerScreen')} >
+        <Text style={styles.logout}>Your Answers</Text>
       </TouchableOpacity>
     </SafeAreaView>
   )
@@ -31,7 +36,10 @@ const LogOutScreen = ({props, navigation}) => {
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.pink,
-    flex: 1
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+    
   },
 
   button: {
@@ -39,7 +47,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.darkPink,
     borderRadius: 30,
-    marginTop: 320,
+    marginTop: 10,
     width: '70%',
     height: 60,
 
