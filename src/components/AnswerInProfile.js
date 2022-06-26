@@ -11,8 +11,9 @@ import { addDoc,
     serverTimestamp} from 'firebase/firestore'
 
 import { db, auth } from '../firebase/index.js'
-
+import Avatar from '../components/Avatar.js';
 export default function AnswerInProfile ({ ansID, userName, profilePic, answer, time, header, OPImg, indivpost, navigation }) {
+    const user =  auth.currentUser;
     const onDeleteHandler = async (id) => {
         try {
             await deleteDoc(doc(db, 'answers', id));
@@ -36,7 +37,10 @@ export default function AnswerInProfile ({ ansID, userName, profilePic, answer, 
     return(
         <View style={styles.postcontainer}>
             <View style= {styles.top}>
-                <Image style={styles.img} source = {{uri:OPImg}}></Image>
+                <View style={styles.img}>
+                    <Avatar size={70} user={user} />
+                </View>
+                {/*<Image style={styles.img} source = {{uri:OPImg}}></Image>*/}
                 <Text style={styles.qn}>{header}</Text>
                 <TouchableOpacity 
                     style={styles.trash}
@@ -106,9 +110,9 @@ const styles = StyleSheet.create({
     },
 
     img: {
-        width: 70,
-        height: 70,
-        borderRadius: 100,
+        //width: 70,
+        //height: 70,
+        //borderRadius: 100,
         marginLeft: 30,
         marginTop: 10
     },
@@ -131,7 +135,7 @@ const styles = StyleSheet.create({
 
     time : {
         marginLeft: 30,
-        marginTop: -15,
+        marginTop: 20,
         fontSize: 13,
         color: colors.blue
     }

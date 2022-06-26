@@ -38,7 +38,7 @@ export default function MakePostScreen() {
                 username: currentUser.displayName,
                 profileImg: currentUser.photoURL,
                 timestamp: serverTimestamp(),
-                email: currentUser.email
+                email: currentUser.email,
             });
 
             console.log('onSubmitHandler success', taskRef.id);
@@ -66,12 +66,14 @@ export default function MakePostScreen() {
                 style={[styles.header, styles.containerShadow]}
                 onChangeText={setHeader}
                 value={header}
+                placeholder="Type a Question Header!"
                 ></TextInput>
                 <TextInput 
                 //multiline={true}
                 style={[styles.input, styles.containerShadow]}
                 onChangeText={setTask}
                 value={task}
+                placeholder="Type your question here!"
                 ></TextInput>
             </View>
             <TouchableOpacity 

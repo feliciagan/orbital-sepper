@@ -26,10 +26,11 @@ export default function Answer ({ indivpost, userName, profilePic, post, time, h
         <View style={styles.postcontainer}>
             <View style= {styles.top}>
                 <Image style={styles.img} source = {{uri:profilePic}}></Image>
-                <Text style={styles.header}>{header}</Text>
+                <Text style={styles.header}>@{userName}</Text>
 
             </View>
             <Text style={styles.post}>{post}</Text>
+
             {/*<Text style={styles.time}>{printedOut}</Text>*/}
         </View>
     )
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
 
     header: {
         position: 'absolute',
-        marginLeft: 130,
+        marginLeft: 120,
         marginTop: 30,
         fontSize: 22,
         textAlign: 'center',
