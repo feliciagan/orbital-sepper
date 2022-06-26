@@ -149,6 +149,11 @@ const AppNavigator = () => {
                       component={OwnPostScreen}
                       options={{headerShown: false}}
               />
+              <Stack.Screen
+                      name="AnswerPostScreen"
+                      component={AnswerPostScreen}
+                      options={{headerShown: false}}
+              />
            </Stack.Navigator>
          )}
       </NavigationContainer>

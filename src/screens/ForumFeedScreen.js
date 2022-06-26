@@ -6,7 +6,7 @@ import { auth, db } from '../firebase/index.js'
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import ForumPost from '../components/ForumPost.js'
 
-export default function ForumScreen() {
+export default function ForumScreen({navigation}) {
     const [activeTab, setActiveTab] = useState('Newest');
 //2:21:52
     const { currentUser } = auth;
@@ -46,10 +46,13 @@ export default function ForumScreen() {
                     <ForumPost 
                         key={post.id}
                         id={post.id}
+                        indivpost={post.id}
                         userName={post.data().username}
                         profilePic={post.data().profileImg}
                         post={post.data().post}
                         time={post.data().timestamp.toDate()} 
+                        header={post.data().header}
+                        navigation={navigation}
                     />
 
                 )

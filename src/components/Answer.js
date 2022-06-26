@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import colors from '../assets/colors/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,9 +11,8 @@ import { addDoc,
     serverTimestamp} from 'firebase/firestore'
 
 import { db, auth } from '../firebase/index.js'
-import { NavigationContainer } from '@react-navigation/native';
 
-export default function ForumInProfile ({ indivpost, userName, profilePic, post, time, header, navigation }) {
+export default function Answer ({ indivpost, userName, profilePic, post, time, header}) {
 
     const postDate = time;
     const todayDate = new Date();
@@ -22,31 +21,26 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
     const printedOut = diffInDays <= 1 
                         ? Math.ceil(Math.abs(todayDate - postDate) / (60*60*1000)) + ' hours ago'
                         : diffInDays + ' days ago'
-    
+    //const individualpost = indivpost
     return(
-        <TouchableOpacity style={styles.postcontainer} 
-                          onPress={() => 
-                            navigation.navigate('AnswerPostScreen', {
-                                userName: userName,
-                                profilePic: profilePic,
-                                indivpost: indivpost,
-                                post: post,
-                                header: header
-                            })}>
+        <View style={styles.postcontainer}>
             <View style= {styles.top}>
                 <Image style={styles.img} source = {{uri:profilePic}}></Image>
-                <Text style={styles.username}>@{userName}</Text>
+                <Text style={styles.header}>{header}</Text>
+
             </View>
-            <Text style={styles.header}>{header}</Text>
-            <Text style={styles.time}>{printedOut}</Text>
-        </TouchableOpacity>
+            <Text style={styles.post}>{post}</Text>
+            {/*<Text style={styles.time}>{printedOut}</Text>*/}
+        </View>
     )
     
 }
 
 const styles = StyleSheet.create({
     top: {
+        //backgroundColor: 'grey',
         flexDirection: 'row',
+        //position: 'absolute'
     },
 
     postcontainer: {
@@ -59,19 +53,12 @@ const styles = StyleSheet.create({
 
     },
 
-    username: {
-        color: colors.darkPink,
-        fontSize: 20,
-        marginLeft: 20,
-        marginTop: 30
-    },
-
     header: {
-        //position: 'absolute',
-        marginLeft: 35,
-        marginTop: 15,
+        position: 'absolute',
+        marginLeft: 130,
+        marginTop: 30,
         fontSize: 22,
-        textAlign: 'left',
+        textAlign: 'center',
         fontWeight: 'bold',
         color: colors.darkBlue
     },
@@ -103,4 +90,3 @@ const styles = StyleSheet.create({
         color: colors.blue
     }
 })
-
