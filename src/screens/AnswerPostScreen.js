@@ -18,7 +18,7 @@ import { db, auth } from '../firebase/index.js'
 
 const AnswerPostScreen = ({ route, navigation }) => {
   
-  const { userName, profilePic, indivpost, post, header  } = route.params;
+  const { userName, profilePic, indivpost, post, header } = route.params;
   const [answer, setAnswer] = useState('');
   const [ans, setAns] = useState([])
   const { currentUser } = auth;
@@ -51,7 +51,9 @@ const AnswerPostScreen = ({ route, navigation }) => {
             profileImg: currentUser.photoURL,
             timestamp: serverTimestamp(),
             email: currentUser.email,
-            postID: Object.values({indivpost})[0]
+            postID: Object.values({indivpost})[0],
+            qnHeader: Object.values({header})[0],
+            OPImg: Object.values({profilePic})[0]
         });
 
         console.log('onSubmitHandler success', );

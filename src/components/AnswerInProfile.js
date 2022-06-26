@@ -12,11 +12,10 @@ import { addDoc,
 
 import { db, auth } from '../firebase/index.js'
 
-export default function ForumInProfile ({ indivpost, userName, profilePic, post, time, header, navigation }) {
-
+export default function AnswerInProfile ({ ansID, userName, profilePic, answer, time, header, OPImg, indivpost, navigation }) {
     const onDeleteHandler = async (id) => {
         try {
-            await deleteDoc(doc(db, 'tasks', id));
+            await deleteDoc(doc(db, 'answers', id));
 
             console.log('onDeleteHandler success', id);
             //showRes('Successfully deleted task!');
@@ -35,28 +34,35 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
                         : diffInDays + ' days ago'
     //const individualpost = indivpost
     return(
-        <TouchableOpacity style={styles.postcontainer}
-                          onPress={() => 
-                            navigation.navigate('AnswerPostScreen', {
-                                userName: userName,
-                                profilePic: profilePic,
-                                indivpost: indivpost,
-                                post: post,
-                                header: header
-                            })}>
+        <View style={styles.postcontainer}>
             <View style= {styles.top}>
-                <Image style={styles.img} source = {{uri:profilePic}}></Image>
-                <Text style={styles.header}>{header}</Text>
+                <Image style={styles.img} source = {{uri:OPImg}}></Image>
+                <Text style={styles.qn}>{header}</Text>
                 <TouchableOpacity 
                     style={styles.trash}
-                    onPress={() => onDeleteHandler(indivpost)}
+                    onPress={() => onDeleteHandler(ansID)}
                 >
-                    <Ionicons name="trash-outline" size={32} color={colors.darkPink} />
+                    <Ionicons name="trash-outline" size={25} color={colors.darkPink} />
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.edit}
+                    onPress={() => navigation.navigate('EditAnswerScreen', {
+                        ansID: ansID, 
+                        userName: userName, 
+                        profilePic: profilePic, 
+                        answer: answer, 
+                        header: header, 
+                        OPImg: OPImg, 
+                        indivpost: indivpost
+                    })}
+                >
+                    <Ionicons name="create-outline" size={25} color={colors.darkPink} />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.post}>{post}</Text>
+            <Text style={styles.youreplied}>you replied...</Text>
+            <Text style={styles.answer}>{answer}</Text>
             <Text style={styles.time}>{printedOut}</Text>
-        </TouchableOpacity>
+        </View>
     )
     
 }
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
     },
 
     postcontainer: {
-        height: 170,
+        height: 190,
         width: 350,
         borderRadius : 20,
         backgroundColor: 'white',
@@ -78,20 +84,25 @@ const styles = StyleSheet.create({
 
     },
 
-    header: {
+    qn: {
         position: 'absolute',
         marginLeft: 115,
         marginTop: 30,
-        fontSize: 22,
+        fontSize: 20,
         textAlign: 'center',
         fontWeight: 'bold',
         color: colors.darkBlue
     },
 
     trash: {
-        marginLeft: 190,
+        marginLeft: 180,
         marginTop: 27,
 
+    },
+
+    edit: {
+        marginTop: 27,
+        marginLeft: 15                                                                                                                                                                  
     },
 
     img: {
@@ -102,15 +113,25 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 
-    post : {
+    youreplied: {
+        fontStyle:'italic',
+        marginLeft: 30,
+        color: colors.darkBlue,
+        marginTop: 10
+
+    },
+
+    answer : {
         marginLeft: 20,
-        marginTop: 20,
-        fontSize: 15
+        textAlign:'left',
+        color: colors.darkBlue,
+        fontSize: 20,
+        marginTop: 5
     },
 
     time : {
         marginLeft: 30,
-        marginTop: 20,
+        marginTop: -15,
         fontSize: 13,
         color: colors.blue
     }

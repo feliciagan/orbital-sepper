@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import ForumInProfile from '../components/ForumInProfile.js';
+import AnswerInProfile from '../components/AnswerInProfile.js';
 import { auth, db } from '../firebase/index.js'
 import { onSnapshot, query, collection, orderBy, where } from 'firebase/firestore';
 import colors from '../assets/colors/colors.js';
 
-function OwnPostScreen({navigation}) {
+function OwnAnswerScreen({navigation}) {
 
     const { currentUser } = auth;
-    const [posts, setPosts] = useState([]);
+    const [ans, setAns] = useState([]);
 
     useEffect(
         () => onSnapshot(
-            query(collection(db, "tasks"), where("email", "==", currentUser.email)
+            query(collection(db, "answers"), where("email", "==", currentUser.email)
             //, orderBy("timestamp", "desc")
             ),
             (snapshot) => {
-                setPosts(snapshot.docs);
+                setAns(snapshot.docs);
             }
         ), [db]
     );
@@ -24,19 +24,21 @@ function OwnPostScreen({navigation}) {
   return (
     <View style={styles.container}>
         <View style={styles.headerContainer}>
-            <Text style={styles.introtext}>Your Posts</Text>
+            <Text style={styles.introtext}>Your Answers</Text>
         </View>
         <ScrollView style={styles.postContainer}>
-            {posts.map((post) => (
-                <ForumInProfile
-                    key={post.id}
-                    id={post.id}
-                    indivpost={post.id}
-                    userName={post.data().username}
-                    profilePic={post.data().profileImg}
-                    post={post.data().post}
-                    time={post.data().timestamp.toDate()} 
-                    header={post.data().header}
+            {ans.map((anss) => (
+                <AnswerInProfile
+                    key={anss.id}
+                    id={anss.id}
+                    ansID={anss.id}
+                    userName={anss.data().username}
+                    profilePic={anss.data().profileImg}
+                    answer={anss.data().answer}
+                    time={anss.data().timestamp.toDate()} 
+                    indivpost={anss.data().postID}
+                    header={anss.data().qnHeader}
+                    OPImg={anss.data().OPImg}
                     navigation={navigation}
                 />
                 )
@@ -72,4 +74,4 @@ const styles = StyleSheet.create({
         height: 300
     }
 })
-export default OwnPostScreen
+export default OwnAnswerScreen
