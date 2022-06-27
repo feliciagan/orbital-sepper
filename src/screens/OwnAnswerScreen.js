@@ -35,7 +35,7 @@ function OwnAnswerScreen({navigation}) {
                     userName={anss.data().username}
                     profilePic={anss.data().profileImg}
                     answer={anss.data().answer}
-                    time={anss.data().timestamp.toDate()} 
+                    //time={anss.data().timestamp.toDate()} 
                     indivpost={anss.data().postID}
                     header={anss.data().qnHeader}
                     OPImg={anss.data().OPImg}

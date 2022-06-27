@@ -74,7 +74,8 @@ const AnswerPostScreen = ({ route, navigation }) => {
   return (
     <View style={styles.page}>
         <View style={styles.headerContainer}>
-            <Image style={styles.img} source = {{uri:profilePic}}></Image>
+            {/*<Image style={styles.img} source = {{uri:profilePic}}></Image>*/}
+            <Image style={styles.img} source = {require("../assets/avatar1.png")} />
             <View>
                 <Text style={styles.username}>@{userName}</Text> 
                 <Text style={styles.asks}>asks</Text> 

@@ -65,7 +65,7 @@ export default function AnswerInProfile ({ ansID, userName, profilePic, answer, 
             </View>
             <Text style={styles.youreplied}>you replied...</Text>
             <Text style={styles.answer}>{answer}</Text>
-            <Text style={styles.time}>{printedOut}</Text>
+            {/*<Text style={styles.time}>{printedOut}</Text>*/}
         </View>
     )
     
