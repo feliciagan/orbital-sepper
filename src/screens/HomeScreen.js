@@ -1,15 +1,17 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, StyleSheet, FlatList, TouchableOpacity, Modal} from 'react-native';
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import colors from '../assets/colors/colors.js';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Comfortaa_700Bold, Comfortaa_300Light } from '@expo-google-fonts/comfortaa';
 
-import { collection, onSnapshot, query, where } from "@firebase/firestore";
+import { collection, doc, onSnapshot, query, where, orderBy, deleteDoc, updateDoc, arrayUnion } from "@firebase/firestore";
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GlobalContext from "../context/GlobalContext.js";
 import { auth, db } from "../firebase";
 import Avatar from '../components/Avatar.js';
-  
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 export default function HomeScreen({ navigation }) {
     /*let [fontsLoaded] = useFonts({
         Comfortaa_700Bold,
@@ -21,12 +23,59 @@ export default function HomeScreen({ navigation }) {
       }*/
 
     const { currentUser } = auth;
+    //const [notShownProfiles, setNotShownProfiles] = useState([]);
     const [userList, setUserList] = useState([]);
+    const [meetupList, setMeetupList] = useState([]);
     const { unfilteredRooms, rooms } = useContext(GlobalContext);
     
+    /*useEffect(() => {
+        const hiddenProfileRef = doc(db, 'users', currentUser.uid);
+
+        const usersQuery = query(collection(db, 'users'), 
+                            where("email", "not-in", notShownProfiles));
+
+        const unsubscribe = onSnapshot(hiddenProfileRef, (doc) => {
+            setNotShownProfiles(doc.get("hiddenProfiles"));
+            //console.log(notShownProfiles);
+
+            const usersQuery = query(collection(db, 'users'), 
+                            where("email", "not-in", notShownProfiles));
+            
+            onSnapshot(usersQuery, (snapshot) => {
+                const users = [];
+                    
+                snapshot.forEach((doc) => {
+                    users.push({ id: doc.id, ...doc.data() });
+                });
+                    
+                setUserList([...users]);
+            });
+            
+        });
+
+        return () => {
+            onSnapshot(hiddenProfileRef, (doc) => {
+                setNotShownProfiles(doc.get("hiddenProfiles"));
+            });
+            const usersQuery = query(collection(db, 'users'), 
+                            where("hiddenProfiles", "not-in", [currentUser.email]));
+            onSnapshot(usersQuery, (snapshot) => {
+                const users = [];
+                    
+                snapshot.forEach((doc) => {
+                    users.push({ id: doc.id, ...doc.data() });
+                });
+                    
+                setUserList([...users]);
+    
+            });
+
+        };
+    }, [notShownProfiles, userList]);*/
     
     useEffect(() => {
         const usersQuery = query(collection(db, 'users'), where("uid", "!=", currentUser.uid));
+                            //where("hiddenProfiles", "not-in", [[currentUser.email]]));
 
         const unsubscribe = onSnapshot(usersQuery, (snapshot) => {
             const users = [];
@@ -40,6 +89,31 @@ export default function HomeScreen({ navigation }) {
 
         return unsubscribe;
     }, []);
+
+    useEffect(() => {
+        const meetupQuery = query(collection(db, 'users', currentUser.uid, "meetups"), 
+                                where("date", ">", new Date()), 
+                                orderBy("date"));
+
+        const unsubscribe = onSnapshot(meetupQuery, (snapshot) => {
+            const meetups = [];
+
+            snapshot.forEach((doc) => {
+                meetups.push({ id: doc.id, ...doc.data() });
+            });
+
+            setMeetupList([...meetups]);
+        });
+
+        return unsubscribe;
+    }, []);
+
+    /*const handleHideProfile = async(item) => {
+        await Promise.all([
+            updateDoc(doc(db, "users", currentUser.uid), {hiddenProfiles: arrayUnion(item.email)}),
+            updateDoc(doc(db, "users", item.uid), {hiddenProfiles: arrayUnion(currentUser.email)})
+        ]);
+    };*/
 
     function RenderUser({item}) {
         const refRBSheet = useRef();
@@ -92,16 +166,75 @@ export default function HomeScreen({ navigation }) {
         );
     };
 
+    const dateFormatting = (date) => {
+        let minutes = date.getMinutes();
+        if (minutes == 0) {
+            minutes = "00";
+        }
+        const [day, month, year, hour, minute] = [
+          date.getDate(),
+          date.getMonth(),
+          date.getFullYear(),
+          date.getHours(),
+          minutes,
+        ];
+    
+        return day.toString() + "/" + month.toString() + "/" + year.toString() + "      " + hour.toString() + ":" + minute.toString();
+    };
+
+    const handleDeleteMeetup = async(item) => {
+        await Promise.all([
+            deleteDoc(doc(collection(doc(db, "users", currentUser.uid), "meetups"), item.id)),
+            deleteDoc(doc(collection(doc(db, "users", item.friendUID), "meetups"), item.id))
+        ]);
+    };
+
+    function RenderMeetup({item}) {
+        return (
+            <View style={{borderBottomWidth: 1, borderBottomColor: colors.darkPink, marginBottom: 10}}>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{width: 10}}></View>
+                    <MaterialCommunityIcons name="clock" size={20} color={colors.darkPink}></MaterialCommunityIcons>
+                    <Text style={styles.renderMeetupText}>{dateFormatting(new Date(item.date.seconds*1000))}</Text>
+                    <TouchableOpacity
+                    style={{position: 'absolute', right: 20}}
+                    onPress={() => handleDeleteMeetup(item)}
+                    >
+                        <MaterialCommunityIcons name="delete" size={20} color={colors.blue}></MaterialCommunityIcons>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{width: 10}}></View>
+                    <Ionicons name="location" size={20} color={colors.darkPink}></Ionicons>
+                    <Text style={styles.renderMeetupText}>{item.location}</Text>
+                </View>
+                <Text style={{fontSize: 15, color: colors.darkPink, marginLeft: 10, marginVertical: 10}}>with {item.friend}</Text>
+            </View>
+        );
+    };
+
     return (
-        <View>
+        <ScrollView vertical showsVerticalScrollIndicator={false}>
             <SafeAreaView>
                 <Text style={styles.introtext}>Hi {currentUser.displayName}!</Text>
             </SafeAreaView>
-            <View>
+            <View style={{backgroundColor: colors.pink, height: 350}}>
                 <Text style={styles.meetuptext}>Upcoming meet-ups</Text>
+                {meetupList.length > 0 ? 
+                <FlatList
+                    vertical
+                    showsVerticalScrollIndicator={false}
+                    data={meetupList}
+                    keyExtractor={(_, i) => i}
+                    renderItem={({ item }) => <RenderMeetup item={item}/>}
+                />
+                : <Text style={{color: colors.darkBlue, alignSelf: 'center'}}>
+                    You have no upcoming meetups</Text>
+                }           
             </View>
             <View>
                 <Text style={styles.sayhellotext}>say hello to</Text>
+                {userList.length > 0 ?
                 <FlatList
                     //style={{ flex: 1, padding: 10 }}
                     showsHorizontalScrollIndicator={false}
@@ -110,8 +243,11 @@ export default function HomeScreen({ navigation }) {
                     keyExtractor={(_, i) => i}
                     renderItem={({ item }) => <RenderUser item={item}/>}
                 />
+                : <Text style={{color: colors.darkBlue, alignSelf: 'center'}}>
+                There are no users to discover</Text>
+                }
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -124,16 +260,20 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         //fontFamily: 'Comfortaa_700Bold'
     },
-
     meetuptext: {
         color: colors.darkBlue,
         fontWeight: 'bold',
         fontSize: 25,
-        backgroundColor: colors.pink,
-        paddingBottom: 300,
+        //backgroundColor: colors.pink,
+        paddingBottom: 20,
         paddingTop: 10,
         paddingLeft: 10,
         //fontFamily: 'Comfortaa_300Light'
+    },
+    renderMeetupText: {
+        color: colors.darkPink, 
+        fontSize: 20,
+        marginLeft: 10
     },
     sayhellotext: {
         color: colors.darkBlue,
@@ -158,8 +298,9 @@ const styles = StyleSheet.create({
     chatButton: {
         backgroundColor: colors.pink, 
         marginTop: 10, 
+        marginHorizontal: 10,
         paddingVertical: 5, 
-        paddingHorizontal: 10, 
+        paddingHorizontal: 20, 
         borderRadius: 20, 
         justifyContent: 'center', 
         alignItems: 'center' 

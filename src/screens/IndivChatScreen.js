@@ -37,7 +37,7 @@ import { useRoute } from "@react-navigation/native";
 
 const randomId = nanoid();
 
-export default function IndivChatScreen() {
+export default function IndivChatScreen({ navigation }) {
   const [roomHash, setRoomHash] = useState("");
   const [messages, setMessages] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -197,7 +197,9 @@ const refRBSheet = useRef();
                     <Text style={styles.bottomSheetButtonText}>Gallery</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                style={styles.bottomSheetButtons}>
+                style={styles.bottomSheetButtons}
+                onPress={() => {navigation.navigate('MeetUpScreen', { userB: userB });
+                                  refRBSheet.current.close();}}>
                     <MaterialIcons name='book-online' color={colors.darkBlue} size={30}></MaterialIcons>
                     <Text style={styles.bottomSheetButtonText}>Arrange MeetUp</Text>
                 </TouchableOpacity>

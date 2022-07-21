@@ -1,14 +1,16 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, SafeAreaView, Text, ScrollView, StyleSheet } from "react-native";
 import GlobalContext from "../context/GlobalContext.js";
 import { auth, db } from "../firebase";
 import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import ChatListItem from "../components/ChatListItem.js";
 import colors from "../assets/colors/colors.js";
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 export default function ChatScreen() {
   const { currentUser } = auth;
   const { rooms, setRooms, setUnfilteredRooms } = useContext(GlobalContext);
+  //const [listData, setListData] = useState([]);
   
   const chatsQuery = query(
     collection(db, "rooms"),
@@ -26,8 +28,17 @@ export default function ChatScreen() {
       setUnfilteredRooms(parsedChats);
       setRooms(parsedChats.filter((doc) => doc.lastMessage));
     });
+  
     return () => unsubscribe();
   }, []);
+
+  /*console.log(rooms);
+  setListData(rooms.map((room) => ({
+    description: room.lastMessage.text,
+    key: room.id,
+    time: room.lastMessage.createdAt,
+    user: room.userB
+  })));*/
 
   return (
     <View /*style={{ flex: 1, padding: 5, paddingRight: 10 }}*/>

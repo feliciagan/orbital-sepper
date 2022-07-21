@@ -2,15 +2,18 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity, Image, TextInput, Button} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { auth, db } from '../firebase/index.js';
-import { updateProfile } from '@firebase/auth';
-import { doc, setDoc } from '@firebase/firestore';
+import { doc, updateDoc, onSnapshot, deleteField } from '@firebase/firestore';
 import colors from '../assets/colors/colors.js';
 import { pickImage, askForPermission, uploadImage, pickUploadImage, askForUploadPermission } from '../utils/utils.js';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { updateProfile } from 'firebase/auth';
 
 
-export default function UserInfoScreen({navigation}) {
+export default function EditProfileScreen({navigation}) {
+    const user = auth.currentUser;
+    const [userDetails, setUserDetails] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [name, setName] = useState('');
     const [uniName, setUniName] = useState('');
@@ -35,8 +38,19 @@ export default function UserInfoScreen({navigation}) {
         })();
     }, []);
 
-    async function handlePress() {
-        const user = auth.currentUser;
+    useEffect(() => {
+        const docRef = doc(db, 'users', user.uid)
+
+        const unsubscribe = onSnapshot(docRef, (doc) => {
+            setUserDetails(doc.data())
+            //setSelectedImage(user.photoURL);
+        });
+
+        return unsubscribe;
+
+    }, []);
+
+    const handleSubmit = async() => {
         let photoURL;
         if (selectedImage) {
           const { url } = await uploadImage(
@@ -46,27 +60,36 @@ export default function UserInfoScreen({navigation}) {
           );
           photoURL = url;
         }
-        const userData = {
-          displayName: displayName,
-          name: name,
-          uniName: uniName,
-          uniYear: uniYear,
-          uniCourse: uniCourse,
-          email: user.email
-        };
+        const userData = {};
         if (photoURL) {
-          userData.photoURL = photoURL;
+            updateProfile(user, {photoURL: photoURL});
+            userData.photoURL = photoURL;
+        }
+        if (displayName) {
+            updateProfile(user, {displayName: displayName});
+            userData.displayName = displayName;
+        }
+        if (name) {
+            userData.name = name;
+        }
+        if (uniName) {
+            userData.uniName = uniName;
+        }
+        if (uniCourse) {
+            userData.uniCourse = uniCourse;
+        }
+        if (uniYear) {
+            userData.uniYear = uniYear;
         }
         if (bio) {
             userData.bio = bio;
         }
-    
-        await Promise.all([
-            updateProfile(user, userData),
-            setDoc(doc(db, "users", user.uid), { ...userData, uid: user.uid }),
-        ]);
+        
+        await updateDoc(doc(db, "users", user.uid), userData);
+
         navigation.navigate("TabNavigator");
-        }
+    };
+    
 
     async function handleProfilePicture() {
         const result = await pickImage();
@@ -82,26 +105,34 @@ export default function UserInfoScreen({navigation}) {
         }
     }
 
+    
     //if (permissionStatus !== "granted") {
       //  return <Text>You need to allow this permission</Text>;
     //}
     
     const refRBSheet = useRef();
 
+    const handleDeleteProfilePicture = async() => {
+        await updateDoc(doc(db, "users", user.uid), {photoURL: deleteField()});
+        refRBSheet.current.close();
+    }
+
     return (
         <View style={{
             flex: 1,
-            backgroundColor: colors.lightBlue}}>
+            backgroundColor: colors.lightBlue,}}>
         <SafeAreaView style={{
             //flex: 1,
             //backgroundColor: colors.lightBlue,
             alignItems: 'center',
         }}>
-            <Text style={{ fontSize: 22, color: colors.darkBlue, marginTop: 20 }}>
-                Profile Info
-            </Text>
-            <Text style={{ fontSize: 14, color: colors.darkBlue, marginTop: 20 }}>
-                Please provide your information below
+            <TouchableOpacity 
+            style={{alignSelf: 'flex-start'}}
+            onPress={() => navigation.goBack()}>
+                <Ionicons name='chevron-back' size={30} color={colors.darkBlue}></Ionicons>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 22, color: colors.darkBlue}}>
+                Edit Profile
             </Text>
             <TouchableOpacity
             onPress={() => refRBSheet.current.open()}
@@ -133,7 +164,7 @@ export default function UserInfoScreen({navigation}) {
                 ref={refRBSheet}
                 closeOnDragDown={true}
                 closeOnPressMask={true}
-                height={200}
+                height={250}
                 customStyles={{
                 wrapper: {
                     backgroundColor: 'transparent',
@@ -160,6 +191,12 @@ export default function UserInfoScreen({navigation}) {
                 </TouchableOpacity>
                 <TouchableOpacity
                 style={styles.bottomSheetButtons}
+                onPress={handleDeleteProfilePicture}>
+                    <MaterialCommunityIcons name='delete' color={colors.darkBlue} size={30}></MaterialCommunityIcons>
+                    <Text style={styles.bottomSheetButtonText}>Remove current profile picture</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.bottomSheetButtons}
                 onPress={() => setSelectedImage(null)}>
                     <MaterialCommunityIcons name='refresh' color={colors.darkBlue} size={30}></MaterialCommunityIcons>
                     <Text style={styles.bottomSheetButtonText}>Clear</Text>
@@ -167,53 +204,58 @@ export default function UserInfoScreen({navigation}) {
             </RBSheet>
             </SafeAreaView>
             <ScrollView vertical showsVerticalScrollIndicator={false}>
+            <Text style={styles.textInputHeader}>Username</Text>
             <TextInput
-            placeholder='Username*'
+            placeholder={user.displayName}
             value={displayName}
             onChangeText={setDisplayName}
             style={styles.textInput}
             />
+            <Text style={styles.textInputHeader}>Name</Text>
             <TextInput
-            placeholder='Name*'
+            placeholder={userDetails.name}
             value={name}
             onChangeText={setName}
             style={styles.textInput}
             />
+            <Text style={styles.textInputHeader}>Home University</Text>
             <TextInput
-            placeholder='Home University*'
+            placeholder={userDetails.uniName}
             value={uniName}
             onChangeText={setUniName}
             style={styles.textInput}
             />
+            <Text style={styles.textInputHeader}>University Major</Text>
             <TextInput
-            placeholder='University Major*'
+            placeholder={userDetails.uniCourse}
             value={uniCourse}
             onChangeText={setUniCourse}
             style={styles.textInput}
             />
+            <Text style={styles.textInputHeader}>Year</Text>
             <TextInput
-            placeholder='Year*'
-            keyboardType='numeric'
-            maxLength={1}
+            placeholder={userDetails.uniYear}
+            //keyboardType='numeric'
+            //maxLength={1}
             value={uniYear}
             onChangeText={setUniYear}
             style={styles.textInput}
             />
+            <Text style={styles.textInputHeader}>Bio</Text>
             <TextInput
-            placeholder='Bio (anything about yourself!)'
+            placeholder={userDetails.bio}
             value={bio}
             onChangeText={setBio}
             style={styles.textInput}
             />
-            <View style={{height: 250}}></View>
+            <View style={{height: 200}}></View>
             </ScrollView>
-            <View style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 20}}>
-            <Button
-                title='Next'
-                color={colors.darkBlue}
-                onPress={handlePress}
-                disabled={!displayName || !name || !uniName || !uniCourse || !uniYear}
-            />
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity 
+            style={{height: 100, justifyContent: 'center', alignItems: 'center'}}
+            onPress={handleSubmit}>
+                <Text style={{color: colors.darkBlue, fontSize: 20}}>Edit</Text>
+            </TouchableOpacity>
             </View>
         </View>
     );
@@ -233,9 +275,15 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingLeft: 20
     },
+    textInputHeader: {
+        alignSelf: 'flex-start',
+        marginLeft: 30,
+        marginTop: 30,
+        marginBottom: 10
+    },
     textInput: {
         borderBottomColor: colors.darkBlue,
-        marginTop: 40,
+        //marginTop: 40,
         borderBottomWidth: 2,
         width: '80%',
         alignSelf: 'center'

@@ -15,12 +15,14 @@ import LogInScreen from '../screens/LogInScreen.js';
 import LogOutScreen from '../screens/LogOutScreen.js';
 import SplashScreen from '../screens/SplashScreen.js';
 import UserInfoScreen from '../screens/UserInfoScreen.js';
+import EditProfileScreen from '../screens/EditProfileScreen.js';
 import ForumFeedScreen from '../screens/ForumFeedScreen.js';
 import AnswerPostScreen from '../screens/AnswerPostScreen.js';
 import MakePostScreen from '../screens/MakePostScreen.js';
 import OwnPostScreen from '../screens/OwnPostScreen.js';
 import OwnAnswerScreen from '../screens/OwnAnswerScreen.js';
 import IndivChatScreen from '../screens/IndivChatScreen.js';
+import MeetUpScreen from '../screens/MeetUpScreen.js';
 import EditAnswerScreen from '../screens/EditAnswerScreen.js';
 import ChatHeader from '../components/ChatHeader.js';
 
@@ -154,6 +156,16 @@ const AppNavigator = () => {
                       options={{headerStyle: {backgroundColor: colors.pink},
                       headerTintColor: colors.darkBlue, 
                       headerTitle: (props) => <ChatHeader {...props} />}}
+              />
+              <Stack.Screen
+                      name="MeetUpScreen"
+                      component={MeetUpScreen}
+                      options={{headerShown: false}}
+              />
+              <Stack.Screen
+                      name="EditProfileScreen"
+                      component={EditProfileScreen}
+                      options={{headerShown: false}}
               />
               <Stack.Screen
                       name="OwnPostScreen"
