@@ -13,6 +13,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LogInScreen from '../screens/LogInScreen.js';
 import LogOutScreen from '../screens/LogOutScreen.js';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen.js';
 import SplashScreen from '../screens/SplashScreen.js';
 import UserInfoScreen from '../screens/UserInfoScreen.js';
 import EditProfileScreen from '../screens/EditProfileScreen.js';
@@ -28,6 +29,7 @@ import ChatHeader from '../components/ChatHeader.js';
 
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/index.js';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen.js';
 
 
 //const LogInStack = createNativeStackNavigator();
@@ -118,6 +120,11 @@ const AppNavigator = () => {
                   component={LogInScreen} 
                   options={{headerShown: false}}
               />
+              <Stack.Screen 
+                  name = "ResetPasswordScreen"
+                  component={ResetPasswordScreen} 
+                  options={{headerShown: false}}
+              />
            </Stack.Navigator>
          ) : (
            <Stack.Navigator>
@@ -137,6 +144,11 @@ const AppNavigator = () => {
               <Stack.Screen
                       name="LogOut"
                       component={LogOutScreen}
+                      options={{headerShown: false}}
+              />
+              <Stack.Screen
+                      name="ChangePasswordScreen"
+                      component={ChangePasswordScreen}
                       options={{headerShown: false}}
               />
               <Stack.Screen

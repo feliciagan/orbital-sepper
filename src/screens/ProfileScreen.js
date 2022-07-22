@@ -25,7 +25,7 @@ export default function ProfileScreen({navigation}) {
     return (
         <View style={{flex: 1}}>
             <SafeAreaView style={styles.headerContainer}>
-                <Text style={{color: colors.darkBlue, fontSize: 30, fontWeight: 'bold', paddingLeft: 20, paddingVertical: 20}}>Hi {user.displayName}!</Text>
+                {/*<Text style={{color: colors.darkBlue, fontSize: 30, fontWeight: 'bold', paddingLeft: 20, paddingVertical: 20}}>Hi {user.displayName}!</Text>*/}
                 <TouchableOpacity 
                     style={styles.settingsIcon}
                     onPress={() => navigation.navigate('LogOut')}>
@@ -65,10 +65,11 @@ export default function ProfileScreen({navigation}) {
 
 const styles = StyleSheet.create ({
     headerContainer: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between',
+        //flexDirection: 'row', 
+        //justifyContent: 'space-between',
     },
     settingsIcon: {
+        alignSelf: 'flex-end',
         paddingVertical: 20,
         paddingRight: 10,
     },

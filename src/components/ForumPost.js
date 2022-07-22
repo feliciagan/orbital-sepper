@@ -13,7 +13,7 @@ import { addDoc,
 import { db, auth } from '../firebase/index.js'
 import { NavigationContainer } from '@react-navigation/native';
 
-export default function ForumInProfile ({ indivpost, userName, profilePic, post, time, header, navigation }) {
+export default function ForumPost ({ indivpost, userName, anon, tag, profilePic, post, time, header, navigation }) {
 
     const postDate = time;
     const todayDate = new Date();
@@ -22,12 +22,15 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
     const printedOut = diffInDays <= 1 
                         ? Math.ceil(Math.abs(todayDate - postDate) / (60*60*1000)) + ' hours ago'
                         : diffInDays + ' days ago'
+
     
     return(
         <TouchableOpacity style={styles.postcontainer} 
                           onPress={() => 
                             navigation.navigate('AnswerPostScreen', {
                                 userName: userName,
+                                anon: anon,
+                                tag: tag,
                                 profilePic: profilePic,
                                 indivpost: indivpost,
                                 post: post,
@@ -35,8 +38,14 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
                             })}>
             <View style= {styles.top}>
         
-                <Image style={styles.img} source = {{uri:profilePic}} />
-                <Text style={styles.username}>@{userName}</Text>
+                {profilePic 
+                ? !anon
+                ? <Image style={styles.img} source = {{uri:profilePic}} /> 
+                : <Image style={styles.img} source = {require("../assets/avatar1.png")} /> 
+                : <Image style={styles.img} source = {require("../assets/avatar1.png")} />}
+                <View style={{flexShrink: 1}}>
+                <Text style={styles.username}>{ !anon ? `@${userName}` : "anon"}</Text>
+                </View>
             </View>
             <Text style={styles.header}>{header}</Text>
             <Text style={styles.time}>{printedOut}</Text>
@@ -48,33 +57,37 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
 const styles = StyleSheet.create({
     top: {
         flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 10
     },
 
     postcontainer: {
-        height: 170,
-        width: 350,
+        //height: 170,
+        width: "95%",
         borderRadius : 20,
         backgroundColor: 'white',
         alignSelf: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        //paddingRight: 20
 
     },
 
     username: {
         color: colors.darkPink,
         fontSize: 20,
-        marginLeft: 20,
-        marginTop: 30
+        marginHorizontal: 20,
+        //marginTop: 10,
+        flexShrink: 1
     },
 
     header: {
         //position: 'absolute',
-        marginLeft: 35,
+        marginHorizontal: 35,
         marginTop: 15,
         fontSize: 22,
         textAlign: 'left',
         fontWeight: 'bold',
-        color: colors.darkBlue
+        color: colors.darkBlue,
     },
 
     trash: {
@@ -88,7 +101,7 @@ const styles = StyleSheet.create({
         height: 70,
         borderRadius: 100,
         marginLeft: 30,
-        marginTop: 10
+        //marginTop: 10
     },
 
     post : {
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
 
     time : {
         marginLeft: 30,
-        marginTop: 20,
+        marginVertical: 20,
         fontSize: 13,
         color: colors.blue
     }

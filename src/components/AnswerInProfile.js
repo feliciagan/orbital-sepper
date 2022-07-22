@@ -37,9 +37,9 @@ export default function AnswerInProfile ({ ansID, userName, profilePic, answer, 
     return(
         <View style={styles.postcontainer}>
             <View style= {styles.top}>
-                <View style={styles.img}>
+                {/*<View style={styles.img}>
                     <Avatar size={70} user={user} />
-                </View>
+    </View>*/}
                 {/*<Image style={styles.img} source = {{uri:OPImg}}></Image>*/}
                 <Text style={styles.qn}>{header}</Text>
                 <TouchableOpacity 
@@ -79,34 +79,42 @@ const styles = StyleSheet.create({
     },
 
     postcontainer: {
-        height: 190,
-        width: 350,
+        //height: 190,
+        width: '95%',
         borderRadius : 20,
         backgroundColor: 'white',
         alignSelf: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        paddingBottom: 15
 
     },
 
     qn: {
-        position: 'absolute',
-        marginLeft: 115,
-        marginTop: 30,
+        //position: 'absolute',
+        marginLeft: 10,
+        marginRight: 100,
+        marginTop: 20,
         fontSize: 20,
-        textAlign: 'center',
+        //textAlign: 'center',
         fontWeight: 'bold',
         color: colors.darkBlue
     },
 
     trash: {
-        marginLeft: 180,
-        marginTop: 27,
+        position: 'absolute',
+        top: 20,
+        right: 10
+        //marginLeft: 180,
+        //marginTop: 27,
 
     },
 
     edit: {
-        marginTop: 27,
-        marginLeft: 15                                                                                                                                                                  
+        position: 'absolute',
+        top: 20, 
+        right: 45
+        //marginTop: 27,
+        //marginLeft: 15                                                                                                                                                                  
     },
 
     img: {
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
     },
 
     answer : {
-        marginLeft: 20,
+        marginHorizontal: 20,
         textAlign:'left',
         color: colors.darkBlue,
         fontSize: 20,

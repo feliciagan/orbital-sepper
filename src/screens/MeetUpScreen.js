@@ -1,7 +1,7 @@
 import { View, SafeAreaView, Text, TextInput, StyleSheet, TouchableOpacity, Button, DatePickerAndroid } from 'react-native';
 import React, { useState } from 'react';
 import colors from '../assets/colors/colors';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import BackButton from '../components/BackButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { auth, db } from '../firebase/index.js';
 import { setDoc, doc, collection } from 'firebase/firestore';
@@ -47,11 +47,7 @@ export default function MeetUpScreen() {
         paddingLeft: 30
     }}>
         <SafeAreaView>
-            <TouchableOpacity 
-                style={{alignSelf: 'flex-start'}}
-                onPress={() => navigation.goBack()}>
-                <Ionicons name='chevron-back' size={30} color={colors.darkBlue}></Ionicons>
-            </TouchableOpacity>
+        <BackButton press={() => navigation.goBack()}></BackButton>
             <Text style={{color: colors.darkBlue, fontSize: 40, fontWeight: 'bold', paddingTop: 30, paddingBottom: 20}}>MeetUp</Text>
         </SafeAreaView>
         <View>

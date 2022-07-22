@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity, Image, TextInput, Button} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import BackButton from '../components/BackButton.js';
 import { auth, db } from '../firebase/index.js';
 import { doc, updateDoc, onSnapshot, deleteField } from '@firebase/firestore';
 import colors from '../assets/colors/colors.js';
@@ -85,6 +85,10 @@ export default function EditProfileScreen({navigation}) {
             userData.bio = bio;
         }
         
+        /*await Promise.all([
+            updateProfile(user, userData),
+            updateDoc(doc(db, "users", user.uid), userData),
+        ]);*/
         await updateDoc(doc(db, "users", user.uid), userData);
 
         navigation.navigate("TabNavigator");
@@ -126,11 +130,7 @@ export default function EditProfileScreen({navigation}) {
             //backgroundColor: colors.lightBlue,
             alignItems: 'center',
         }}>
-            <TouchableOpacity 
-            style={{alignSelf: 'flex-start'}}
-            onPress={() => navigation.goBack()}>
-                <Ionicons name='chevron-back' size={30} color={colors.darkBlue}></Ionicons>
-            </TouchableOpacity>
+            <BackButton press={() => navigation.goBack()}></BackButton>
             <Text style={{ fontSize: 22, color: colors.darkBlue}}>
                 Edit Profile
             </Text>

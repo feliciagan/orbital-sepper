@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     introtext: {
         color: colors.darkBlue,
         fontWeight: 'bold',
-        fontSize: 40,
+        fontSize: 20,
         paddingBottom: 10,
         paddingLeft: 10,
         //fontFamily: 'Comfortaa_700Bold'
