@@ -13,6 +13,7 @@ import { addDoc,
     doc,
     deleteDoc, 
     getDocs,
+    orderBy,
     where,
     serverTimestamp,
     updateDoc,
@@ -85,7 +86,8 @@ useEffect(() => {
             email: currentUser.email,
             postID: Object.values({indivpost})[0],
             qnHeader: Object.values({header})[0],
-            OPImg: Object.values({profilePic})[0]
+            OPImg: Object.values({profilePic})[0],
+            likes: 0
         });
 
         console.log('onSubmitHandler success', );

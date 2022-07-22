@@ -45,6 +45,7 @@ export default function MakePostScreen({navigation}) {
                 profileImg: currentUser.photoURL,
                 timestamp: serverTimestamp(),
                 email: currentUser.email,
+                likes: 0
             });
 
             console.log('onSubmitHandler success', taskRef.id);

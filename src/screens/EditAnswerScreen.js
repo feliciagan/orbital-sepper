@@ -11,6 +11,7 @@ import { addDoc,
     query,
     collection,
     doc,
+    updateDoc,
     deleteDoc, 
     getDocs,
     where,
@@ -30,7 +31,7 @@ const EditAnswerScreen = ({ route, navigation }) => {
   }; */
 
  
-  const onSubmitHandler = async () => {
+  /*const onSubmitHandler = async () => {
     if (ans.length === 0) {
         // showRes('Task description cannot be empty!');
         return;
@@ -52,6 +53,29 @@ const EditAnswerScreen = ({ route, navigation }) => {
         console.log('onSubmitHandler success', );
         //showRes('Successfully added task!');
         clearForm();
+        navigation.goBack()
+    } catch (err) {
+        console.log('onSubmitHandler failure', err);
+        //showRes('Failed to add task!');
+    }
+  };*/
+
+  const onSubmitHandler = async () => {
+    if (ans.length === 0) {
+        // showRes('Task description cannot be empty!');
+        return;
+    }
+
+    try { //use setDoc so user can edit answer
+        const answerID = Object.values({ansID})[0]
+        const answerRef = await updateDoc(doc(db, 'answers', answerID), {
+            answer: ans,
+        });
+
+        console.log('onSubmitHandler success', );
+        //showRes('Successfully added task!');
+        clearForm();
+        navigation.goBack()
     } catch (err) {
         console.log('onSubmitHandler failure', err);
         //showRes('Failed to add task!');
