@@ -39,7 +39,8 @@ export default function MakePostScreen() {
                 profileImg: currentUser.photoURL,
                 timestamp: serverTimestamp(),
                 email: currentUser.email,
-            });
+                likes: 0
+            }); 
 
             console.log('onSubmitHandler success', taskRef.id);
             //showRes('Successfully added task!');

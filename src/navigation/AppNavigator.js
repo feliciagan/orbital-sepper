@@ -22,6 +22,9 @@ import OwnPostScreen from '../screens/OwnPostScreen.js';
 import OwnAnswerScreen from '../screens/OwnAnswerScreen.js';
 import IndivChatScreen from '../screens/IndivChatScreen.js';
 import EditAnswerScreen from '../screens/EditAnswerScreen.js';
+import ForumSearchScreen from '../screens/ForumSearchScreen.js';
+import EditPostScreen from '../screens/EditPostScreen.js';
+import AfterSearchScreen from '../screens/AfterSearchScreen.js';
 import ChatHeader from '../components/ChatHeader.js';
 
 import { onAuthStateChanged } from 'firebase/auth';
@@ -173,6 +176,21 @@ const AppNavigator = () => {
               <Stack.Screen
                       name="EditAnswerScreen"
                       component={EditAnswerScreen}
+                      options={{headerShown: false}}
+              />
+              <Stack.Screen
+                      name="EditPostScreen"
+                      component={EditPostScreen}
+                      options={{headerShown: false}}
+              />
+              <Stack.Screen
+                      name="ForumSearchScreen"
+                      component={ForumSearchScreen}
+                      options={{headerShown: false}}
+              />
+              <Stack.Screen
+                      name="AfterSearchScreen"
+                      component={AfterSearchScreen}
                       options={{headerShown: false}}
               />
            </Stack.Navigator>

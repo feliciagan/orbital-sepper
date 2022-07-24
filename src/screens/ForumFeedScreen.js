@@ -5,14 +5,20 @@ import Feather from 'react-native-vector-icons/Feather';
 import { auth, db } from '../firebase/index.js'
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import ForumPost from '../components/ForumPost.js'
-
+import algoliasearch from 'algoliasearch';
+import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom'
 export default function ForumScreen({navigation}) {
     const [activeTab, setActiveTab] = useState('Newest');
 
     const { currentUser } = auth;
     const [posts, setPosts] = useState([]);
 
-    useEffect(
+    const searchClient = algoliasearch(
+        '5LE4KG5PFC',
+        'b3d6181964669a080786eb2524d5a477'
+    )
+
+    useEffect( 
         () => onSnapshot(
             query(collection(db, "tasks"), orderBy("timestamp", "desc")),
             (snapshot) => {
@@ -27,7 +33,7 @@ export default function ForumScreen({navigation}) {
         <View style={styles.container}>
             <SafeAreaView style={styles.headerContainer}>
                 <Text style={styles.introtext}>Forum</Text>
-                <TouchableOpacity style={styles.searchIcon}>
+                <TouchableOpacity style={styles.searchIcon} onPress={()=>navigation.navigate('ForumSearchScreen')}>
                     <Feather name="search" size={40} color={colors.lightGray}></Feather>
                 </TouchableOpacity>
             </SafeAreaView>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView} from 'react-native';
 import colors from '../assets/colors/colors.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Answer from '../components/Answer.js';
 import { useRoute } from '@react-navigation/native'
 import { addDoc,
@@ -13,6 +14,8 @@ import { addDoc,
     deleteDoc, 
     getDocs,
     where,
+    updateDoc,
+    increment,
     serverTimestamp} from 'firebase/firestore'
 import { db, auth } from '../firebase/index.js'
 
@@ -22,6 +25,7 @@ const AnswerPostScreen = ({ route, navigation }) => {
   const [answer, setAnswer] = useState('');
   const [ans, setAns] = useState([])
   const { currentUser } = auth;
+  const [liked, setLiked] = useState(false);
   /*const handleChange = (e) => {
     setDetails({
         ...details,
@@ -65,7 +69,6 @@ const AnswerPostScreen = ({ route, navigation }) => {
     }
   };
 
-
     const clearForm = () => {
         setAnswer('');
         Keyboard.dismiss();
@@ -74,13 +77,13 @@ const AnswerPostScreen = ({ route, navigation }) => {
   return (
     <View style={styles.page}>
         <View style={styles.headerContainer}>
-            {/*<Image style={styles.img} source = {{uri:profilePic}}></Image>*/}
-            <Image style={styles.img} source = {require("../assets/avatar1.png")} />
+            <Image style={styles.img} source = {{uri:profilePic}} />
+            {/*<Image style={styles.img} source = {require("../assets/avatar1.png")} /> */}
             <View>
                 <Text style={styles.username}>@{userName}</Text> 
                 <Text style={styles.asks}>asks</Text> 
             </View>
-            
+                 
         </View>
         <ScrollView style={styles.answerFeed}>
             <View>
@@ -135,12 +138,19 @@ const styles = StyleSheet.create({
 
     username: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 25,
         alignSelf: 'center',
         fontWeight: 'bold',
         paddingLeft: 20,
         //paddingRight: 140,
         paddingTop: 60,
+    },
+
+    likebutton: {
+        paddingTop: 60,
+        alignSelf: 'center',
+        paddingLeft: 20,
+        justifyContent: 'flex-end'
     },
 
     question: {
@@ -156,9 +166,6 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         fontWeight: 'bold',
         paddingLeft: 30,
-        
-        //paddingLeft: 20
-        
     },
 
     img: {
