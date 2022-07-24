@@ -46,6 +46,7 @@ export default function MakePostScreen({navigation}) {
                 timestamp: serverTimestamp(),
                 email: currentUser.email,
                 likes: 0
+
             });
 
             console.log('onSubmitHandler success', taskRef.id);

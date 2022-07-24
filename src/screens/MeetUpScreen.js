@@ -83,8 +83,10 @@ const styles = StyleSheet.create({
     datetimeText: {
         fontSize: 20,
         color: colors.darkBlue,
-        marginTop: 30
+        marginTop: 30,
+        //alignItems: 'center'
     },
+
     textInput: {
         backgroundColor: 'white',
         borderRadius: 10,

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView} from 'react-native';
 import colors from '../assets/colors/colors.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import BackButton from '../components/BackButton.js';
+
 import Answer from '../components/Answer.js';
 import { useRoute } from '@react-navigation/native'
 import { addDoc,
@@ -15,9 +19,10 @@ import { addDoc,
     getDocs,
     orderBy,
     where,
-    serverTimestamp,
+    increment,
     updateDoc,
-    increment} from 'firebase/firestore'
+    serverTimestamp } from 'firebase/firestore'
+
 import { db, auth } from '../firebase/index.js'
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -30,6 +35,7 @@ const AnswerPostScreen = ({ route, navigation }) => {
   const [currentUserLike, setCurrentUserLike] = useState(false);
   const [likes, setLikes] = useState(0);
   const { currentUser } = auth;
+  const [liked, setLiked] = useState(false);
   /*const handleChange = (e) => {
     setDetails({
         ...details,
@@ -99,7 +105,6 @@ useEffect(() => {
     }
   };
 
-
     const clearForm = () => {
         setAnswer('');
         Keyboard.dismiss();
@@ -128,6 +133,7 @@ useEffect(() => {
         
         <ScrollView style={styles.answerFeed}>
         <View style={styles.headerContainer}>
+
         {profilePic 
                 ? !anon
                 ? <Image style={styles.img} source = {{uri:profilePic}} /> 
@@ -137,6 +143,7 @@ useEffect(() => {
                 <Text style={styles.username}>{ !anon ? `@${userName}` : "anon"}</Text> 
                 <Text style={styles.asks}>asks</Text> 
             </View>
+
         </View>
             <Text style={styles.question}>
                     "{post}"
@@ -222,6 +229,13 @@ const styles = StyleSheet.create({
         //paddingTop: 60,
     },
 
+    likebutton: {
+        paddingTop: 60,
+        alignSelf: 'center',
+        paddingLeft: 20,
+        justifyContent: 'flex-end'
+    },
+
     question: {
         color: colors.darkPink,
         fontSize: 30,
@@ -235,9 +249,6 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         fontWeight: 'bold',
         paddingLeft: 30,
-        
-        //paddingLeft: 20
-        
     },
 
     img: {

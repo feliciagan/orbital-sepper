@@ -1,0 +1,1 @@
+npx firestore-algolia-search

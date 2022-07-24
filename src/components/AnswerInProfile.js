@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     qn: {
         //position: 'absolute',
         marginLeft: 10,
-        marginRight: 100,
+        marginRight: 60,
         marginTop: 20,
         fontSize: 20,
         //textAlign: 'center',

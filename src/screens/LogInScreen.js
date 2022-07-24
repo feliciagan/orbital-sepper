@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, Keyboard } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
 import HeaderTabs from '../components/HeaderTabs.js'
 
 import {
@@ -114,6 +114,7 @@ const restoreForm = () => {
         </TouchableOpacity>
         : <></>}
         <TouchableOpacity style={styles.signIn}
+                          testID="login"
                           onPress={activeTab === "Log In" ? loginHandler : signUpHandler}>
             <Text style={styles.buttonWords}>{activeTab === "Log In" ? "Log In" : "Sign Up"}</Text>
         </TouchableOpacity> 
