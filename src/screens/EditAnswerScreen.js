@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView} from 'react-native';
+import { View, SafeAreaView, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView} from 'react-native';
 import colors from '../assets/colors/colors.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import BackButton from '../components/BackButton.js';
 import Answer from '../components/Answer.js';
 import { useRoute } from '@react-navigation/native'
 import { addDoc,
@@ -10,13 +11,14 @@ import { addDoc,
     query,
     collection,
     doc,
+    updateDoc,
     deleteDoc, 
     getDocs,
     where,
     serverTimestamp} from 'firebase/firestore'
 import { db, auth } from '../firebase/index.js'
 
-const EditAnswerScreen = ({ route }) => {
+const EditAnswerScreen = ({ route, navigation }) => {
   
   const { ansID, userName, profilePic, answer, header, OPImg, indivpost } = route.params;
   const [ans, setAns] = useState({answer});
@@ -29,7 +31,7 @@ const EditAnswerScreen = ({ route }) => {
   }; */
 
  
-  const onSubmitHandler = async () => {
+  /*const onSubmitHandler = async () => {
     if (ans.length === 0) {
         // showRes('Task description cannot be empty!');
         return;
@@ -51,6 +53,29 @@ const EditAnswerScreen = ({ route }) => {
         console.log('onSubmitHandler success', );
         //showRes('Successfully added task!');
         clearForm();
+        navigation.goBack()
+    } catch (err) {
+        console.log('onSubmitHandler failure', err);
+        //showRes('Failed to add task!');
+    }
+  };*/
+
+  const onSubmitHandler = async () => {
+    if (ans.length === 0) {
+        // showRes('Task description cannot be empty!');
+        return;
+    }
+
+    try { //use setDoc so user can edit answer
+        const answerID = Object.values({ansID})[0]
+        const answerRef = await updateDoc(doc(db, 'answers', answerID), {
+            answer: ans,
+        });
+
+        console.log('onSubmitHandler success', );
+        //showRes('Successfully added task!');
+        clearForm();
+        navigation.goBack()
     } catch (err) {
         console.log('onSubmitHandler failure', err);
         //showRes('Failed to add task!');
@@ -64,7 +89,8 @@ const EditAnswerScreen = ({ route }) => {
     };
 
   return (
-    <View style={styles.page}>
+    <SafeAreaView style={styles.page}>
+        <BackButton press={() => navigation.goBack()}></BackButton>
         <Text style={styles.header}>Edit your answer</Text>
         <TextInput 
         style={styles.answer}
@@ -75,7 +101,7 @@ const EditAnswerScreen = ({ route }) => {
         <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
             <Ionicons name="send-sharp" size={32} color={colors.darkPink} />
         </TouchableOpacity>
-    </View>
+    </SafeAreaView>
         
   )
 }
@@ -96,7 +122,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom: 25,
         paddingLeft: 10,
-        paddingTop: 50
+        //paddingTop: 50
+        marginVertical: 10
     },
 
 

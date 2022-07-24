@@ -1,6 +1,8 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, TextInput, ToastAndroid, Keyboard, ScrollView } from 'react-native';
 import React, {useState, useEffect } from 'react';
 import colors from '../assets/colors/colors.js';
+import BackButton from '../components/BackButton.js';
+import RNPickerSelect from 'react-native-picker-select';
 import { addDoc,
          setDoc,
          onSnapshot,
@@ -14,10 +16,12 @@ import { addDoc,
 
 import { db, auth } from '../firebase/index.js'
 
-export default function MakePostScreen() {
+export default function MakePostScreen({navigation}) {
 
     const [task, setTask] = useState('');
     const [header, setHeader] = useState('');
+    const [anon, setAnon] = useState(false);
+    const [tag, setTag] = useState('');
     const { currentUser } = auth;
     //const [taskList, setTaskList] = useState([]);
 
@@ -36,15 +40,20 @@ export default function MakePostScreen() {
                 post: task,
                 header: header,
                 username: currentUser.displayName,
+                anon: anon,
+                tag: tag,
                 profileImg: currentUser.photoURL,
                 timestamp: serverTimestamp(),
                 email: currentUser.email,
                 likes: 0
-            }); 
+
+            });
 
             console.log('onSubmitHandler success', taskRef.id);
             //showRes('Successfully added task!');
             clearForm();
+
+            navigation.goBack()
         } catch (err) {
             console.log('onSubmitHandler failure', err);
             //showRes('Failed to add task!');
@@ -60,6 +69,7 @@ export default function MakePostScreen() {
     return (
         <ScrollView>
             <SafeAreaView>
+            <BackButton press={() => navigation.goBack()}></BackButton>
                 <Text style={styles.introtext}>Make A Post!</Text>
             </SafeAreaView>
             <View>
@@ -76,6 +86,28 @@ export default function MakePostScreen() {
                 value={task}
                 placeholder="Type your question here!"
                 ></TextInput>
+            </View>
+            <View style={{marginLeft: 30, marginTop : 30}}>
+            <RNPickerSelect
+                onValueChange={(value) => setTag(value)}
+                placeholder={{label: 'Choose Topic', value: null}}
+                items={[
+                    { label: 'NUS academics', value: 'NUS academics' },
+                    { label: 'NUS school life', value: 'NUS school life' },
+                    { label: 'Singapore', value: 'Singapore' },
+                    { label: 'Others', value: 'Others' },
+                ]}
+            />
+            </View>
+            <View style={{marginLeft: 30, marginTop : 30}}>
+            <RNPickerSelect
+                onValueChange={(value) => setAnon(value)}
+                placeholder={{label: 'Set Anonymity?', value: null}}
+                items={[
+                    { label: 'Be Anonymous', value: true },
+                    { label: 'Show Username', value: false },
+                ]}
+            />
             </View>
             <TouchableOpacity 
                 style={styles.button}
@@ -129,7 +161,8 @@ const styles = StyleSheet.create({
         width: 100,
         alignSelf: 'center',
         height: 60,
-        marginTop: 30
+        marginTop: 30,
+        marginBottom: 60
     },
 
     posttext: {

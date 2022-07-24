@@ -11,7 +11,7 @@ import {
     storageBucket,
     messagingSenderId,
     appId,
-    
+
 } from '@env';
 
 const firebaseConfig = {
@@ -21,7 +21,6 @@ const firebaseConfig = {
     storageBucket: storageBucket,
     messagingSenderId: messagingSenderId,
     appId: appId,
-    
 };
 
 const app = initializeApp(firebaseConfig);

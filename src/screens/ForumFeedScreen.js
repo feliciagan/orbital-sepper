@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, FlatList, Scrol
 import React, {useState, useEffect} from 'react';
 import colors from '../assets/colors/colors.js';
 import Feather from 'react-native-vector-icons/Feather';
+import BackButton from '../components/BackButton.js';
 import { auth, db } from '../firebase/index.js'
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import ForumPost from '../components/ForumPost.js'
@@ -12,6 +13,7 @@ export default function ForumScreen({navigation}) {
 
     const { currentUser } = auth;
     const [posts, setPosts] = useState([]);
+    const [mostLikedPosts, setMostLikedPosts] = useState([]);
 
     const searchClient = algoliasearch(
         '5LE4KG5PFC',
@@ -27,11 +29,21 @@ export default function ForumScreen({navigation}) {
         ), [db]
     );
 
+    useEffect(
+        () => onSnapshot(
+            query(collection(db, "tasks"), orderBy("likes", "desc")),
+            (snapshot) => {
+                setMostLikedPosts(snapshot.docs);
+            }
+        ), [db]
+    );
+
     console.log(posts)
     
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.headerContainer}>
+            <BackButton press={() => navigation.goBack()}></BackButton>
                 <Text style={styles.introtext}>Forum</Text>
                 <TouchableOpacity style={styles.searchIcon} onPress={()=>navigation.navigate('ForumSearchScreen')}>
                     <Feather name="search" size={40} color={colors.lightGray}></Feather>
@@ -41,6 +53,7 @@ export default function ForumScreen({navigation}) {
                 <TabButton text={'Newest'} activeTab={activeTab} setActiveTab={setActiveTab}/>
                 <TabButton text={'Most liked'} activeTab={activeTab} setActiveTab={setActiveTab}/>
             </SafeAreaView>
+            <View style={{height: 20}}></View>
             <ScrollView style={styles.feed}>
             {/*<FlatList
                 data={userData}
@@ -48,12 +61,32 @@ export default function ForumScreen({navigation}) {
                 vertical
                 //showsHorizontalScrollIndicator={false}
     /> */}
-                {posts.map((post) => (
+                {activeTab ===  "Newest"
+                ? posts.map((post) => (
                     <ForumPost 
                         key={post.id}
                         id={post.id}
                         indivpost={post.id}
                         userName={post.data().username}
+                        anon={post.data().anon}
+                        tag={post.data().tag}
+                        profilePic={post.data().profileImg}
+                        post={post.data().post}
+                        time={post.data().timestamp.toDate()} 
+                        header={post.data().header}
+                        navigation={navigation}
+                    />
+
+                )
+                )
+                : mostLikedPosts.map((post) => (
+                    <ForumPost 
+                        key={post.id}
+                        id={post.id}
+                        indivpost={post.id}
+                        userName={post.data().username}
+                        anon={post.data().anon}
+                        tag={post.data().tag}
                         profilePic={post.data().profileImg}
                         post={post.data().post}
                         time={post.data().timestamp.toDate()} 
@@ -115,7 +148,7 @@ const styles = StyleSheet.create({
     feed: {
         backgroundColor: colors.pink,
         height: 500,
-        width: 420,
+        //width: 420,
     
         
     }

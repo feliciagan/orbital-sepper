@@ -5,13 +5,16 @@ import HeaderTabs from '../components/HeaderTabs.js'
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    sendEmailVerification
 } from 'firebase/auth';
 
 import AuthTextInput from '../components/auth/AuthTextInput.js';
 import { auth } from '../firebase/index.js';
+import colors from "../assets/colors/colors.js";
+import { NavigationContainer } from "@react-navigation/native";
 
 
-const LogInScreen = () => {
+const LogInScreen = ({navigation}) => {
 
   const [activeTab, setActiveTab] = useState("Log In");
   const [email, setEmail] = useState('');
@@ -53,6 +56,8 @@ const signUpHandler = async () => {
             console.log(user);
 
             restoreForm();
+
+            sendEmailVerification(auth.currentUser);
            
         })
         .catch((error) => {
@@ -101,6 +106,13 @@ const restoreForm = () => {
                     secureTextEntry
             />
         </View>
+        {activeTab === "Log In" 
+        ? <TouchableOpacity
+        style={{alignSelf:'center', marginTop: 10}}
+        onPress={() => navigation.navigate("ResetPasswordScreen")}>
+            <Text style={{fontSize: 15, color: colors.darkBlue}}>Reset password</Text>
+        </TouchableOpacity>
+        : <></>}
         <TouchableOpacity style={styles.signIn}
                           testID="login"
                           onPress={activeTab === "Log In" ? loginHandler : signUpHandler}>
@@ -151,7 +163,7 @@ const styles = StyleSheet.create({
     },
 
     heading: {
-        fontSize: 36,
+        fontSize: 25,
         paddingLeft: 80,
         color: 'rgb(24,47,84)'
     },

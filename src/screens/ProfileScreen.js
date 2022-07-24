@@ -14,16 +14,18 @@ export default function ProfileScreen({navigation}) {
     useEffect(() => {
         const docRef = doc(db, 'users', user.uid)
 
-        onSnapshot(docRef, (doc) => {
+        const unsubscribe = onSnapshot(docRef, (doc) => {
             setUserDetails(doc.data())
-        })
+        });
+
+        return unsubscribe;
 
     }, []);
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             <SafeAreaView style={styles.headerContainer}>
-                <Text style={{color: colors.darkBlue, fontSize: 30, fontWeight: 'bold', paddingLeft: 20, paddingVertical: 20}}>Hi {user.displayName}!</Text>
+                {/*<Text style={{color: colors.darkBlue, fontSize: 30, fontWeight: 'bold', paddingLeft: 20, paddingVertical: 20}}>Hi {user.displayName}!</Text>*/}
                 <TouchableOpacity 
                     style={styles.settingsIcon}
                     onPress={() => navigation.navigate('LogOut')}>
@@ -35,25 +37,27 @@ export default function ProfileScreen({navigation}) {
                 <Avatar size={300} user={user}/>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.profileContainer}>
+            <ScrollView vertical showsVerticalScrollIndicator={false} style={styles.profileContainer}>
                 <Text style={styles.userImportantInfo}>{userDetails.name}</Text>
-                
-                <View style={styles.infoContainer}>
-                        <View style={styles.infoBox}>
-                            <Text style={styles.subText}>Year</Text>
-                            <Text style={styles.userInfo}>{userDetails.uniYear}</Text>
-                        </View>
-                        <View style={[styles.infoBox, { borderColor: colors.blue, borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                            <Text style={styles.subText}>Course</Text>
-                            <Text style={styles.userInfo}>{userDetails.uniCourse}</Text>
-                        </View>
                         <View style={styles.infoBox}>
                             <Text style={styles.subText}>Uni</Text>
                             <Text style={styles.userInfo}>{userDetails.uniName}</Text>
                         </View>
-                </View>
-
-                <Text style={styles.userInfo}>{userDetails.bio}</Text>
+                        <View style={styles.infoBox}>
+                            <Text style={styles.subText}>Course</Text>
+                            <Text style={styles.userInfo}>{userDetails.uniCourse}</Text>
+                        </View>
+                        <View style={styles.infoBox}>
+                            <Text style={styles.subText}>Year</Text>
+                            <Text style={styles.userInfo}>{userDetails.uniYear}</Text>
+                        </View>
+                        <View style={{marginVertical: 15, marginHorizontal: 10}}>
+                            <Text style={{color: colors.darkBlue, fontSize: 18}}>{userDetails.bio}</Text>
+                        </View>
+                        <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate("EditProfileScreen")}>
+                            <Text style={{color: colors.darkBlue, fontSize: 15}}>Edit profile</Text>
+                        </TouchableOpacity>
+                        <View style={{height: 35}}></View>
             </ScrollView>
         </View>
     );
@@ -61,10 +65,11 @@ export default function ProfileScreen({navigation}) {
 
 const styles = StyleSheet.create ({
     headerContainer: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between',
+        //flexDirection: 'row', 
+        //justifyContent: 'space-between',
     },
     settingsIcon: {
+        alignSelf: 'flex-end',
         paddingVertical: 20,
         paddingRight: 10,
     },
@@ -81,24 +86,27 @@ const styles = StyleSheet.create ({
         backgroundColor: colors.pink,
         marginTop: 20,
         paddingTop: 25,
-        paddingLeft: 20,
-        borderRadius: 50,
-        height: '50%'
+        paddingHorizontal: 20,
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
+        height: '60%'
     },
-    infoContainer: {
+    /*infoContainer: {
         flexDirection: "row",
         alignSelf: "center",
         marginVertical: 32
-    },
+    },*/
     infoBox: {
-        alignItems: "center",
-        flex: 1
+        //alignItems: "center",
+        marginVertical: 5,
+        marginHorizontal: 20
     },
     userImportantInfo: {
         color: colors.darkBlue,
         fontSize: 40,
         fontWeight: 'bold',
-        paddingLeft: 10
+        paddingHorizontal: 10,
+        marginBottom: 15
     },
     userInfo: {
         color: colors.darkBlue,
@@ -110,4 +118,14 @@ const styles = StyleSheet.create ({
         textTransform: "uppercase",
         fontWeight: "500",
     },
+    editButton: {
+        backgroundColor: colors.darkPink, 
+        marginTop: 10, 
+        marginHorizontal: 50,
+        paddingVertical: 5, 
+        paddingHorizontal: 20, 
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    }
 });

@@ -17,7 +17,7 @@ import { addDoc,
 
 import { db, auth } from '../firebase/index.js'
 import Avatar from '../components/Avatar.js';
-export default function ForumInProfile ({ indivpost, userName, profilePic, post, time, header, navigation }) {
+export default function ForumInProfile ({ indivpost, userName, anon, tag, profilePic, post, time, header, navigation }) {
 
     const user =  auth.currentUser;
     const onDeleteHandler = async (id) => {
@@ -69,15 +69,17 @@ export default function ForumInProfile ({ indivpost, userName, profilePic, post,
                           onPress={() => 
                             navigation.navigate('AnswerPostScreen', {
                                 userName: userName,
+                                anon: anon,
+                                tag: tag,
                                 profilePic: profilePic,
                                 indivpost: indivpost,
                                 post: post,
                                 header: header
                             })}>
             <View style= {styles.top}>
-                <View style={styles.img}>
+                {/*<View style={styles.img}>
                     <Avatar size={70} user={user} />
-                </View>
+                        </View>*/}
                 {/*<Image style={styles.img} source = {{uri:profilePic}}></Image>*/}
                 <Text style={styles.header}>{header}</Text>
                 <TouchableOpacity 
@@ -115,29 +117,44 @@ const styles = StyleSheet.create({
     },
 
     postcontainer: {
-        height: 170,
-        width: 350,
+        //height: 170,
+        width: '95%',
         borderRadius : 20,
         backgroundColor: 'white',
         alignSelf: 'center',
-        marginBottom: 20
-
+        marginBottom: 20,
+        paddingBottom: 15
     },
 
     header: {
-        position: 'absolute',
-        marginLeft: 115,
+        //position: 'absolute',
+        marginLeft: 10,
+        marginRight: 60,
         marginTop: 30,
         fontSize: 22,
-        textAlign: 'center',
+        //textAlign: 'center',
         fontWeight: 'bold',
         color: colors.darkBlue
     },
 
     trash: {
-        marginLeft: 180,
-        marginTop: 27,
 
+        position: 'absolute',
+        top: 20,
+        right: 10
+        //marginLeft: 190,
+        //marginTop: 27,
+
+    },
+
+    edit: {
+        position: 'absolute',
+        top: 20, 
+        right: 45,
+        //justifyContent: 'flex-end',
+
+        //marginTop: 27,
+        //marginLeft: 15                                                                                                                                                                  
     },
 
     img: {
@@ -149,18 +166,16 @@ const styles = StyleSheet.create({
     },
 
     post : {
-        marginLeft: 20,
+        marginHorizontal: 20,
         marginTop: 20,
         fontSize: 15
     },
 
-    edit: {
-        marginTop: 27,
-        marginLeft: 15                                                                                                                                                                  
-    },
+
 
     time : {
         marginLeft: 30,
+        marginBottom: 15,
         marginTop: 15,
         fontSize: 13,
         color: colors.blue

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Text, ScrollView, StyleSheet } from 'react-native';
 import AnswerInProfile from '../components/AnswerInProfile.js';
 import { auth, db } from '../firebase/index.js'
 import { onSnapshot, query, collection, orderBy, where } from 'firebase/firestore';
 import colors from '../assets/colors/colors.js';
+import BackButton from '../components/BackButton.js';
 
 function OwnAnswerScreen({navigation}) {
 
@@ -22,7 +23,8 @@ function OwnAnswerScreen({navigation}) {
     );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+        <BackButton press={() => navigation.goBack()}></BackButton>
         <View style={styles.headerContainer}>
             <Text style={styles.introtext}>Your Answers</Text>
         </View>
@@ -44,7 +46,7 @@ function OwnAnswerScreen({navigation}) {
                 )
             )}
         </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -59,14 +61,14 @@ const styles = StyleSheet.create({
         //flexDirection: 'row', 
         //justifyContent: 'space-between',
         alignContent: 'flex-start',
-        height: 120
+        //height: 120
     }, 
 
     introtext: {
         color: colors.darkBlue,
         fontWeight: 'bold',
         fontSize: 40,
-        paddingVertical: 50,
+        paddingVertical: 10,
         paddingLeft: 10,
     },
 
