@@ -16,6 +16,7 @@ import { addDoc,
     where,
     serverTimestamp} from 'firebase/firestore'
 import { db, auth } from '../firebase/index.js'
+import BackButton from '../components/BackButton.js';
 
 const EditPostScreen = ({ route }) => {
   
@@ -68,6 +69,7 @@ const EditPostScreen = ({ route }) => {
 
   return (
     <View style={styles.page}>
+        <BackButton press={() => navigation.goBack()}></BackButton>
         <Text style={styles.header}>Edit your post</Text>
         <TextInput 
         style={styles.answer}
