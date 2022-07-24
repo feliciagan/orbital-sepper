@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView, SafeAreaView} from 'react-native';
 import colors from '../assets/colors/colors.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Answer from '../components/Answer.js';
@@ -16,6 +16,7 @@ import { addDoc,
     where,
     serverTimestamp} from 'firebase/firestore'
 import { db, auth } from '../firebase/index.js'
+import BackButton from '../components/BackButton.js';
 
 const EditPostScreen = ({ route }) => {
   
@@ -67,7 +68,8 @@ const EditPostScreen = ({ route }) => {
     };
 
   return (
-    <View style={styles.page}>
+    <SafeAreaView style={styles.page}>
+        <BackButton press={() => navigation.goBack()}></BackButton>
         <Text style={styles.header}>Edit your post</Text>
         <TextInput 
         style={styles.answer}
@@ -78,7 +80,7 @@ const EditPostScreen = ({ route }) => {
         <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
             <Ionicons name="send-sharp" size={32} color={colors.darkPink} />
         </TouchableOpacity>
-    </View>
+    </SafeAreaView>
         
   )
 }
@@ -99,7 +101,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom: 25,
         paddingLeft: 10,
-        paddingTop: 50
+        marginVertical: 10
+        //paddingTop: 50
     },
 
     answer: {
