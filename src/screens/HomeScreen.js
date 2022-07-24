@@ -168,8 +168,8 @@ export default function HomeScreen({ navigation }) {
 
     const dateFormatting = (date) => {
         let minutes = date.getMinutes();
-        if (minutes == 0) {
-            minutes = "00";
+        if (minutes < 10) {
+            minutes = "0" + minutes;
         }
         const [day, month, year, hour, minute] = [
           date.getDate(),
