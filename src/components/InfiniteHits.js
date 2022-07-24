@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 10,
-    height: 120,
+    //height: 120,
     flexDirection: 'column',
   },
   titleText: {
@@ -57,15 +57,14 @@ const InfiniteHits = ({ hits, hasMore, refineNext }) => {
       
 
       <TouchableOpacity style={styles.item} 
-      onPress={() => 
+      /*onPress={() => 
         navigation.navigate('AfterSearchScreen', {
             userName: "username",
             //profilePic: "profilePic",
             //indivpost: "indivpost",
             post: "post",
             header: item.getObject(item.objectID, {attributesToRetrieve: ["header"]})
-        })}
-        //onPress={setRecord}
+        })}*/
         >
         <View style={styles.username}>
           <Highlight attribute="username" hit={item} />

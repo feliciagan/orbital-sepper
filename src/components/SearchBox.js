@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   input: {
-    width: 320,
+    width: '82%',
     height: 48,
     padding: 12,
     marginLeft: 12,
