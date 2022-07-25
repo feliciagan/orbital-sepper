@@ -120,7 +120,7 @@ export default function IndivChatScreen({ navigation }) {
   async function onSend(messages = []) {
     const writes = messages.map((m) => addDoc(roomMessagesRef, m));
     const lastMessage = messages[messages.length - 1];
-    writes.push(updateDoc(roomRef, { lastMessage }));
+    writes.push(updateDoc(roomRef, { lastMessage: lastMessage }));
     await Promise.all(writes);
   }
 
@@ -139,7 +139,7 @@ export default function IndivChatScreen({ navigation }) {
     const lastMessage = { ...message, text: "Image" };
     await Promise.all([
       addDoc(roomMessagesRef, message),
-      updateDoc(roomRef, { lastMessage }),
+      updateDoc(roomRef, { lastMessage: lastMessage }),
     ]);
   }
 
