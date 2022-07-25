@@ -37,10 +37,6 @@ export default function AnswerInProfile ({ ansID, userName, profilePic, answer, 
     return(
         <View style={styles.postcontainer}>
             <View style= {styles.top}>
-                {/*<View style={styles.img}>
-                    <Avatar size={70} user={user} />
-    </View>*/}
-                {/*<Image style={styles.img} source = {{uri:OPImg}}></Image>*/}
                 <Text style={styles.qn}>{header}</Text>
                 <TouchableOpacity 
                     style={styles.trash}
@@ -73,13 +69,10 @@ export default function AnswerInProfile ({ ansID, userName, profilePic, answer, 
 
 const styles = StyleSheet.create({
     top: {
-        //backgroundColor: 'grey',
         flexDirection: 'row',
-        //position: 'absolute'
     },
 
     postcontainer: {
-        //height: 190,
         width: '95%',
         borderRadius : 20,
         backgroundColor: 'white',
@@ -90,12 +83,10 @@ const styles = StyleSheet.create({
     },
 
     qn: {
-        //position: 'absolute',
         marginLeft: 10,
         marginRight: 60,
         marginTop: 20,
         fontSize: 20,
-        //textAlign: 'center',
         fontWeight: 'bold',
         color: colors.darkBlue
     },
@@ -104,23 +95,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         right: 10
-        //marginLeft: 180,
-        //marginTop: 27,
 
     },
 
     edit: {
         position: 'absolute',
         top: 20, 
-        right: 45
-        //marginTop: 27,
-        //marginLeft: 15                                                                                                                                                                  
+        right: 45                                                                                                                                                                
     },
 
     img: {
-        //width: 70,
-        //height: 70,
-        //borderRadius: 100,
         marginLeft: 30,
         marginTop: 10
     },

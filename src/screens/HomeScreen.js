@@ -13,69 +13,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function HomeScreen({ navigation }) {
-    /*let [fontsLoaded] = useFonts({
-        Comfortaa_700Bold,
-        Comfortaa_300Light
-      });
-    
-      if (!fontsLoaded) {
-        return <AppLoading />;
-      }*/
-
     const { currentUser } = auth;
-    //const [notShownProfiles, setNotShownProfiles] = useState([]);
     const [userList, setUserList] = useState([]);
     const [meetupList, setMeetupList] = useState([]);
     const { unfilteredRooms, rooms } = useContext(GlobalContext);
-    
-    /*useEffect(() => {
-        const hiddenProfileRef = doc(db, 'users', currentUser.uid);
-
-        const usersQuery = query(collection(db, 'users'), 
-                            where("email", "not-in", notShownProfiles));
-
-        const unsubscribe = onSnapshot(hiddenProfileRef, (doc) => {
-            setNotShownProfiles(doc.get("hiddenProfiles"));
-            //console.log(notShownProfiles);
-
-            const usersQuery = query(collection(db, 'users'), 
-                            where("email", "not-in", notShownProfiles));
-            
-            onSnapshot(usersQuery, (snapshot) => {
-                const users = [];
-                    
-                snapshot.forEach((doc) => {
-                    users.push({ id: doc.id, ...doc.data() });
-                });
-                    
-                setUserList([...users]);
-            });
-            
-        });
-
-        return () => {
-            onSnapshot(hiddenProfileRef, (doc) => {
-                setNotShownProfiles(doc.get("hiddenProfiles"));
-            });
-            const usersQuery = query(collection(db, 'users'), 
-                            where("hiddenProfiles", "not-in", [currentUser.email]));
-            onSnapshot(usersQuery, (snapshot) => {
-                const users = [];
-                    
-                snapshot.forEach((doc) => {
-                    users.push({ id: doc.id, ...doc.data() });
-                });
-                    
-                setUserList([...users]);
-    
-            });
-
-        };
-    }, [notShownProfiles, userList]);*/
+              
     
     useEffect(() => {
         const usersQuery = query(collection(db, 'users'), where("uid", "!=", currentUser.uid));
-                            //where("hiddenProfiles", "not-in", [[currentUser.email]]));
+                            
 
         const unsubscribe = onSnapshot(usersQuery, (snapshot) => {
             const users = [];
@@ -108,12 +54,6 @@ export default function HomeScreen({ navigation }) {
         return unsubscribe;
     }, []);
 
-    /*const handleHideProfile = async(item) => {
-        await Promise.all([
-            updateDoc(doc(db, "users", currentUser.uid), {hiddenProfiles: arrayUnion(item.email)}),
-            updateDoc(doc(db, "users", item.uid), {hiddenProfiles: arrayUnion(currentUser.email)})
-        ]);
-    };*/
 
     function RenderUser({item}) {
         const refRBSheet = useRef();
@@ -258,17 +198,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingBottom: 10,
         paddingLeft: 10,
-        //fontFamily: 'Comfortaa_700Bold'
     },
     meetuptext: {
         color: colors.darkBlue,
         fontWeight: 'bold',
         fontSize: 25,
-        //backgroundColor: colors.pink,
         paddingBottom: 20,
         paddingTop: 10,
         paddingLeft: 10,
-        //fontFamily: 'Comfortaa_300Light'
     },
     renderMeetupText: {
         color: colors.darkPink, 
@@ -282,7 +219,6 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingTop: 20,
         paddingLeft: 10,
-        //fontFamily: 'Comfortaa_300Light'
     },
     profImptText: {
         color: colors.darkBlue,

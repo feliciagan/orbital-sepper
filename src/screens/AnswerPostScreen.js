@@ -210,23 +210,17 @@ const styles = StyleSheet.create({
     },
 
     headerContainer: {
-        flexDirection: 'row', 
-        //justifyContent: 'spa',
-        //height: 130,
+        flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 10,
-        //marginVertical: 10,
     },
 
     username: {
         color: 'white',
         fontSize: 30,
-        //alignSelf: 'center',
         fontWeight: 'bold',
         marginHorizontal: 20,
         flexShrink: 1
-        //paddingRight: 140,
-        //paddingTop: 60,
     },
 
     likebutton: {
@@ -256,7 +250,6 @@ const styles = StyleSheet.create({
         height: 70,
         borderRadius: 100,
         marginLeft: 30,
-        //marginTop: 50
     },
 
     input: {
@@ -264,21 +257,16 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lightBlue,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        //borderRadius: 30,
         paddingTop: 50,
         paddingLeft : 30,
     },
 
     button: {
-        //marginTop : - 50,
-        //marginBottom: 750,
-        //alignSelf: 'flex-end',
         marginRight: 20
     },
 
     answerFeed: {
         backgroundColor: colors.pink,
-        //height: '2%'
     }
 
 })

@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Text, TextInput, StyleSheet, TouchableOpacity, Button, DatePickerAndroid } from 'react-native';
+import { Platform, View, SafeAreaView, Text, TextInput, StyleSheet, TouchableOpacity, Button, DatePickerAndroid } from 'react-native';
 import React, { useState } from 'react';
 import colors from '../assets/colors/colors';
 import BackButton from '../components/BackButton';
@@ -10,6 +10,8 @@ import "react-native-get-random-values";
 import { nanoid } from "nanoid";
 
 export default function MeetUpScreen() {
+    const [showDate, setShowDate] = useState(false);
+    const [showTime, setShowTime] = useState(false);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [location, setLocation] = useState('');
@@ -52,16 +54,36 @@ export default function MeetUpScreen() {
         </SafeAreaView>
         <View>
             <Text style={styles.datetimeText}>Date:</Text>
-            <DateTimePicker 
+            <TouchableOpacity
+            onPress={() => setShowDate(true)}>
+                <Text>Choose Date</Text>
+            </TouchableOpacity>
+            {showDate && <DateTimePicker 
             mode="date"
             value={date}
-            onChange={(event, date) => setDate(date)} />
+            onChange={(event, date) => {
+                if (Platform.OS === "ios") {
+                    setDate(date);
+                } else {
+                    setDate(date);
+                    setShowDate(false);
+                }
+            }} />}
             <Text style={styles.datetimeText}>Time:</Text>
-            <DateTimePicker 
+            <TouchableOpacity 
+            onPress={() => setShowTime(true)}>
+                <Text>Choose Time</Text>
+            </TouchableOpacity>
+            {showTime && <DateTimePicker 
             mode="time" 
             value={time}
-            minuteInterval={30}
-            onChange={(event, time) => setTime(time)}/>
+            onChange={(event, time) => {
+                if (Platform.OS === "ios") {
+                    setTime(time);
+                } else {
+                    setTime(time);
+                    setShowTime(false);
+                }}}/>}
             <Text style={styles.datetimeText}>Location:</Text>
             <TextInput
             value={location}
@@ -84,7 +106,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: colors.darkBlue,
         marginTop: 30,
-        //alignItems: 'center'
     },
 
     textInput: {
