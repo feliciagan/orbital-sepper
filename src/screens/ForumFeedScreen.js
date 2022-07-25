@@ -55,12 +55,6 @@ export default function ForumScreen({navigation}) {
             </SafeAreaView>
             <View style={{height: 20}}></View>
             <ScrollView style={styles.feed}>
-            {/*<FlatList
-                data={userData}
-                renderItem={renderUser}
-                vertical
-                //showsHorizontalScrollIndicator={false}
-    /> */}
                 {activeTab ===  "Newest"
                 ? posts.map((post) => (
                     <ForumPost 
@@ -143,12 +137,10 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: 'row',
-        //backgroundColor: 'lightpink'
     },
     feed: {
         backgroundColor: colors.pink,
         height: 500,
-        //width: 420,
     
         
     }

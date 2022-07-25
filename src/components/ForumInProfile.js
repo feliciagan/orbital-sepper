@@ -23,12 +23,6 @@ export default function ForumInProfile ({ indivpost, userName, anon, tag, profil
     const onDeleteHandler = async (id) => {
         try {
             await deleteDoc(doc(db, 'tasks', id));
-            /*const ans = query(collection(db, "answers"), where("postID", "==", id));
-            const batch = writeBatch(db);
-            ans.forEach(doc => {
-                batch.delete(doc);
-            });
-            await batch.commit(); */
 
             const ans = collection(db, "answers");
             const myQuery = query(ans, where("postID", "==", id));
@@ -37,17 +31,6 @@ export default function ForumInProfile ({ indivpost, userName, anon, tag, profil
             await Promise.all(mySnapshot.forEach((docc) => {
                 deleteDoc(doc(db, "answers", docc.id))
             }));
-            /*if (snapshot.empty) {
-                console.log('No matching documents.');
-                return;
-              }  
-              
-              snapshot.forEach(doc => {
-                console.log(doc.id, '=>', doc.data());
-              });
-            //await deleteDoc(doc(db, 'answers', id), where("postID", "==", id));
-            //await Promise.all([deleteDoc(doc(db, 'tasks', id))])
-            console.log('onDeleteHandler success', id); */
 
             //showRes('Successfully deleted task!');
         } catch (err) {
@@ -77,10 +60,6 @@ export default function ForumInProfile ({ indivpost, userName, anon, tag, profil
                                 header: header
                             })}>
             <View style= {styles.top}>
-                {/*<View style={styles.img}>
-                    <Avatar size={70} user={user} />
-                        </View>*/}
-                {/*<Image style={styles.img} source = {{uri:profilePic}}></Image>*/}
                 <Text style={styles.header}>{header}</Text>
                 <TouchableOpacity 
                     style={styles.trash}
@@ -111,13 +90,10 @@ export default function ForumInProfile ({ indivpost, userName, anon, tag, profil
 
 const styles = StyleSheet.create({
     top: {
-        //backgroundColor: 'grey',
         flexDirection: 'row',
-        //position: 'absolute'
     },
 
     postcontainer: {
-        //height: 170,
         width: '95%',
         borderRadius : 20,
         backgroundColor: 'white',
@@ -127,12 +103,10 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        //position: 'absolute',
         marginLeft: 10,
         marginRight: 60,
         marginTop: 30,
         fontSize: 22,
-        //textAlign: 'center',
         fontWeight: 'bold',
         color: colors.darkBlue
     },
@@ -142,25 +116,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         right: 10
-        //marginLeft: 190,
-        //marginTop: 27,
 
     },
 
     edit: {
         position: 'absolute',
         top: 20, 
-        right: 45,
-        //justifyContent: 'flex-end',
-
-        //marginTop: 27,
-        //marginLeft: 15                                                                                                                                                                  
+        right: 45,                                                                                                                                                                
     },
 
     img: {
-        //width: 70,
-        //height: 70,
-        //borderRadius: 100,
         marginLeft: 30,
         marginTop: 10
     },

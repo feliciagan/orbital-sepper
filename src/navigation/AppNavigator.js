@@ -223,51 +223,6 @@ const AppNavigator = () => {
     );
   };
 
-/*const InsideAppNavigator = () => (
-  <MainStack.Navigator>
-    {!currUser.displayName && (
-      <MainStack.Screen
-            name="UserInfo"
-            component={UserInfoScreen}
-            options={{headerShown: false}}
-      />
-    )}
-    <MainStack.Screen
-            name="TabNavigator"
-            component={TabNavigator}
-            options={{headerShown: false}}
-    />
-    
-    <MainStack.Screen
-            name="LogOut"
-            component={LogOutScreen}
-            options={{headerShown: false}}
-    />
-
-    <MainStack.Screen
-            name="MakePostScreen"
-            component={MakePostScreen}
-            options={{headerShown: false}}
-    />
-
-    <MainStack.Screen
-            name="ForumFeedScreen"
-            component={ForumFeedScreen}
-            options={{headerShown: false}}
-    />
-  </MainStack.Navigator>
-)
-
-const LogInNavigator = () => (
-  <LogInStack.Navigator>
-    <LogInStack.Screen 
-      name = "LogInScreen"
-      component={LogInScreen} 
-      options={{headerShown: false}}
-    />
-  </LogInStack.Navigator>
-  
-);*/
 
 const styles = StyleSheet.create({
     tabBar: {

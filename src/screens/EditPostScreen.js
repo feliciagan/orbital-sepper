@@ -18,7 +18,7 @@ import { addDoc,
 import { db, auth } from '../firebase/index.js'
 import BackButton from '../components/BackButton.js';
 
-const EditPostScreen = ({ route }) => {
+const EditPostScreen = ({ route, navigation }) => {
   
   const { userName, profilePic, header, post, indivpost } = route.params;
   const [pst, setPst] = useState({post});
@@ -40,16 +40,7 @@ const EditPostScreen = ({ route }) => {
     try { //use setDoc so user can edit answer
         const postID = Object.values({indivpost})[0]
         const answerRef = await updateDoc(doc(db, 'tasks', postID), {
-            //answer: ans,
             post: pst,
-            //username: currentUser.displayName,
-            //profileImg: currentUser.photoURL,
-            //timestamp: serverTimestamp(),
-            //email: currentUser.email,
-            //postID: Object.values({indivpost})[0],
-            //header: Object.values({header})[0],
-            //likes: 0,
-            //profileImg: Object.values({profilePic})[0]
         });
 
         console.log('onSubmitHandler success', );
@@ -92,7 +83,6 @@ const styles = StyleSheet.create({
     page: {
         backgroundColor: colors.pink,
         flex: 1,
-        justifyContent: ''
     },
 
     header: {

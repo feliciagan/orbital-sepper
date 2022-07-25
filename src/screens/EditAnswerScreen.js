@@ -23,42 +23,6 @@ const EditAnswerScreen = ({ route, navigation }) => {
   const { ansID, userName, profilePic, answer, header, OPImg, indivpost } = route.params;
   const [ans, setAns] = useState({answer});
   const { currentUser } = auth;
-  /*const handleChange = (e) => {
-    setDetails({
-        ...details,
-        [e.target.name]: e.target.value,
-    });
-  }; */
-
- 
-  /*const onSubmitHandler = async () => {
-    if (ans.length === 0) {
-        // showRes('Task description cannot be empty!');
-        return;
-    }
-
-    try { //use setDoc so user can edit answer
-        const answerID = Object.values({ansID})[0]
-        const answerRef = await setDoc(doc(db, 'answers', answerID), {
-            answer: ans,
-            username: currentUser.displayName,
-            profileImg: currentUser.photoURL,
-            timestamp: serverTimestamp(),
-            email: currentUser.email,
-            postID: Object.values({indivpost})[0],
-            qnHeader: Object.values({header})[0],
-            OPImg: Object.values({profilePic})[0]
-        });
-
-        console.log('onSubmitHandler success', );
-        //showRes('Successfully added task!');
-        clearForm();
-        navigation.goBack()
-    } catch (err) {
-        console.log('onSubmitHandler failure', err);
-        //showRes('Failed to add task!');
-    }
-  };*/
 
   const onSubmitHandler = async () => {
     if (ans.length === 0) {
@@ -113,7 +77,6 @@ const styles = StyleSheet.create({
     page: {
         backgroundColor: colors.pink,
         flex: 1,
-        justifyContent: ''
     },
 
     header: {
@@ -122,7 +85,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom: 25,
         paddingLeft: 10,
-        //paddingTop: 50
         marginVertical: 10
     },
 

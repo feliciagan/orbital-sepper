@@ -25,7 +25,6 @@ export default function ProfileScreen({navigation}) {
     return (
         <View style={{flex: 1}}>
             <SafeAreaView style={styles.headerContainer}>
-                {/*<Text style={{color: colors.darkBlue, fontSize: 30, fontWeight: 'bold', paddingLeft: 20, paddingVertical: 20}}>Hi {user.displayName}!</Text>*/}
                 <TouchableOpacity 
                     style={styles.settingsIcon}
                     onPress={() => navigation.navigate('LogOut')}>

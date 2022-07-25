@@ -58,10 +58,7 @@ const styles = StyleSheet.create({
     },
 
     headerContainer: {
-        //flexDirection: 'row', 
-        //justifyContent: 'space-between',
         alignContent: 'flex-start',
-        //height: 120
     }, 
 
     introtext: {
